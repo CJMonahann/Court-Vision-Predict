@@ -79,6 +79,7 @@ class NbaNews(db.Model):
 class NbaTeams(db.Model): 
     __tablename__ = 'NbaTeams'
     id = db.Column(db.Integer, primary_key=True)
+    apiId = db.Column(db.Integer, unique=False) #the teams ID number from the API
     name = db.Column(db.String(30), unique=False)
     nickname = db.Column(db.String(30), unique=False)
     code = db.Column(db.Integer, unique=True)
@@ -91,7 +92,8 @@ class NbaTeams(db.Model):
 class Players(db.Model): 
     __tablename__ = 'Players'
     id = db.Column(db.Integer, primary_key=True)
-    teamId = db.Column(db.Integer, ForeignKey("NbaTeams.id", ondelete="CASCADE"))
+    apiId = db.Column(db.Integer, unique=False) #the player's ID number from the API
+    teamId = db.Column(db.Integer, ForeignKey("NbaTeams.apiId", ondelete="CASCADE"))
     firstName = db.Column(db.String(30), unique=False)
     lastName = db.Column(db.String(30), unique=False)
     dateOfBirth = db.Column(db.String(30), unique=False)
@@ -109,7 +111,7 @@ class Players(db.Model):
 class PlayerStatistics(db.Model):
     __tablename__ = 'PlayerStatistics'
     id = db.Column(db.Integer, primary_key=True)
-    playerID = db.Column(db.Integer, ForeignKey("Players.id", ondelete="CASCADE"))
+    playerId = db.Column(db.Integer, ForeignKey("Players.apiId", ondelete="CASCADE"))
     points = db.Column(db.Integer, unique=False)
     min = db.Column(db.String(8), unique=False)
     fgm = db.Column(db.Float, unique=False)
@@ -135,7 +137,7 @@ class PlayerStatistics(db.Model):
 class TeamForumPosts(db.Model): 
     __tablename__ = 'TeamForumPosts'
     id = db.Column(db.Integer, primary_key=True)
-    teamId = db.Column(db.Integer, ForeignKey("NbaTeams.id", ondelete="CASCADE"))
+    teamId = db.Column(db.Integer, ForeignKey("NbaTeams.apiId", ondelete="CASCADE"))
     accountId = db.Column(db.Integer, ForeignKey("Accounts.id", ondelete="CASCADE"))
     date = db.Column(db.String(30), unique=False)
     time = db.Column(db.String(30), unique=False)
@@ -157,8 +159,8 @@ class RemovedTeamForumPosts(db.Model):
 class ScheduledGames(db.Model): 
     __tablename__ = 'ScheduledGames'
     id = db.Column(db.Integer, primary_key=True)
-    team1 = db.Column(db.Integer, ForeignKey("NbaTeams.id", ondelete="CASCADE"))
-    team2 = db.Column(db.Integer, ForeignKey("NbaTeams.id", ondelete="CASCADE"))
+    team1 = db.Column(db.Integer, ForeignKey("NbaTeams.apiId", ondelete="CASCADE"))
+    team2 = db.Column(db.Integer, ForeignKey("NbaTeams.apiId", ondelete="CASCADE"))
     date = db.Column(db.String(30), unique=False)
     time = db.Column(db.String(30), unique=False)
     location = db.Column(db.String(30), unique=False)
