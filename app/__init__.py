@@ -23,4 +23,4 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= True
 db = SQLAlchemy(app)
 
 # Add models
-from app import routes, models
+from app import routes, models, collect_training_data, collect_prediciton_data, ai_model
