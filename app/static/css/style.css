@@ -1,0 +1,89 @@
+.container {
+    position: relative;
+}
+
+.nav-bar {
+    background-color: blue;
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    border-color: #000000;
+    border-style: solid;
+}
+
+.tab {
+    background-color:#579aff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-color: #000000;
+    border-style: solid;
+}
+
+.head {
+    color: white;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    color: rgb(255, 255, 255);
+}
+
+
+.search-box {
+    display: flex;
+    align-items: center;
+}
+
+.search-box input[type="text"] {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 5px;
+    border-color: #000000;
+    border-style: solid;
+}
+
+.search-box button {
+    background-color: #579aff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border-color: #000000;
+    border-style: solid;
+}
+
+.head img {
+    width: 100px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.user-profile-tab {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    background-color: blue;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.tab.sign-up,
+.tab.login {
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.user-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
