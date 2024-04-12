@@ -6,11 +6,12 @@ class CollectTrainingData:
 	#load environment variable for API key
 	load_dotenv('.env')
 
-	#API KEY
-	__API_KEY = os.getenv("__API_KEY")
+	def __init__(self):
+		self.__API_KEY = os.getenv("__API_KEY")
+		self.__TRAINING_PATH = "./app/model data/games_training_data.json"
 
 	#implements min-max normalization technique to normalize an array of data
-	def __normalize_data(data):
+	def __normalize_data(self, data):
 		normalized_data = []
 		sample_min = min(data)
 		sample_max = max(data)
@@ -22,7 +23,7 @@ class CollectTrainingData:
 
 		return normalized_data
 
-	def __load_in_games(season, MAX_SAMPLES):
+	def __load_in_games(self, season, MAX_SAMPLES):
 		#constant variables
 		MAX_CALLS = 401 #allowed called to be made to the API per minute (we have a restriction)
 
@@ -34,7 +35,7 @@ class CollectTrainingData:
 		querystring = {"season":str(season)}
 
 		headers = {
-			"X-RapidAPI-Key": CollectTrainingData.__API_KEY,
+			"X-RapidAPI-Key": self.__API_KEY,
 			"X-RapidAPI-Host": "api-nba-v1.p.rapidapi.com"
 		}
 
@@ -45,7 +46,6 @@ class CollectTrainingData:
 			response = response["response"]
 
 			#iterate through games to extract statistics
-
 			num_api_calls = 1
 
 			for game in response[:MAX_SAMPLES]: #NEED TO TAKE THIS OUT TO GET FULL DATA
@@ -74,14 +74,14 @@ class CollectTrainingData:
 
 				if num_api_calls < MAX_CALLS: #if we haven't reaches the max API calls per minute, collect game stats
 					try:
-						home_stats, visitor_stats = CollectTrainingData.__get_game_stats(game_id)
+						home_stats, visitor_stats = self.__get_game_stats(game_id)
 					except TypeError:
 						home_stats = None
 						visitor_stats = None
 				else: #put program to rest and wait for API allowance to refresh
 					time.sleep(70)
 					try:
-						home_stats, visitor_stats = CollectTrainingData.__get_game_stats(game_id)
+						home_stats, visitor_stats = self.__get_game_stats(game_id)
 					except TypeError:
 						home_stats = None
 						visitor_stats = None
@@ -100,7 +100,7 @@ class CollectTrainingData:
 
 			return season_games_data
 
-	def __get_game_stats(game_id):
+	def __get_game_stats(self, game_id):
 		final_visiting_stats = []
 		final_home_stats = []
 
@@ -109,14 +109,14 @@ class CollectTrainingData:
 		querystring = {"id":str(game_id)}
 
 		headers = {
-			"X-RapidAPI-Key": CollectTrainingData.__API_KEY,
+			"X-RapidAPI-Key": self.__API_KEY,
 			"X-RapidAPI-Host": "api-nba-v1.p.rapidapi.com"
 		}
 
 		response = requests.get(url, headers=headers, params=querystring)
 		response = response.json()
 
-		if "response" in response: #if their is a game stat history
+		if "response" in response: #if there is a game stat history
 			response = response["response"]
 
 			#collect visitor team stats
@@ -140,20 +140,20 @@ class CollectTrainingData:
 					return 
 				
 			#if we haven't returned, it means we have a full array of data, and can normalize it
-			normalized_home = CollectTrainingData.__normalize_data(final_home_stats)
-			normalized_visitors = CollectTrainingData.__normalize_data(final_visiting_stats)
+			normalized_home = self.__normalize_data(final_home_stats)
+			normalized_visitors = self.__normalize_data(final_visiting_stats)
 
 			return normalized_home, normalized_visitors
 
-	def collect_training_data(years=[2020,2021,2022], num_samples=40):
+	def collect_training_data(self, years=[2020,2021,2022], num_samples=40):
 		total_data = {}
 
 		#collect game data from the API for a specific season
 		for year in years:
-			games_data = CollectTrainingData.__load_in_games(year, num_samples)
+			games_data = self.__load_in_games(year, num_samples)
 			total_data.update(games_data) #append games_data dict to total_data dict
 		
 		#write all data to JSON file to be accessed for model training
-		out_file = open("./app/model data/games_training_data.json", "w")
+		out_file = open(self.__TRAINING_PATH, "w")
 		json.dump(total_data, out_file)
 		out_file.close()
