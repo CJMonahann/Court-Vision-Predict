@@ -35,7 +35,7 @@ class AppDecisionTree:
             temp_dict = { #represents a specific game that was predicted
                 "home": home_team,
                 "visitors": visitor_team,
-                "prediciton": result
+                "prediction": result
             }
 
             dict[match_date].append(temp_dict) #add this sub-dict to the array already within the dicitonary. Each list holds game predicitons for the same day
