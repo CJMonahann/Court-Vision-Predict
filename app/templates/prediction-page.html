@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prediction_page.css') }}">
+
+<!-- Game Date | Match Up -->
+{% for i in range(gameDate|length) %}
+<div class="gameDate">
+<h2>{{ gameDate[i] }} | {{ teams[i][0] }} vs {{ teams[i][1] }}</h2>
+
+<!-- Home Team -->
+<div class="teamHome">
+    <h2>{{ teams[i][0] }}</h2>
+    <img alt="{{ teams[i][0] }} Logo">
+    <p><strong>Home</strong></p>
+</div>
+
+<!-- Visiting Team -->
+<div class="teamVisitor">
+    <h2>{{ teams[i][1] }}</h2>
+    <img alt="{{ teams[i][1] }} Logo">
+    <p><strong>Visitor</strong></p>
+</div>
+
+<!-- CVP's AI Prediction -->
+<div class="predictionCVPAI">
+    <h2>Prediction</h2>
+    <p>The prediction outcome is: <p><strong>{{ cvpPrediction[i] }}</strong></p></p>
+</div>
+
+<!-- User Predictions Form and Choice -->
+<div class="predictionUser">
+
+    <!-- Predictions Form -->
+    <form class="predictionForm">
+        <h2>Make Your Prediction</h2>
+        <label for="prediction">Who do you think will win?</label><br>
+        <input type="radio" id="home" name="prediction" value="{{ teams[i][0] }}">
+        <label for="home">{{ teams[i][0] }}</label><br>
+        <input type="radio" id="visitor" name="prediction" value="{{ teams[i][1] }}">
+        <label for="visitor">{{ teams[i][1] }}</label><br></br>
+        <input type="submit" value="Submit">
+    </form>
+    
+    <!-- User's Choice (Hidden) -->
+    <div class="userPredictionDisplay" style="display: none;">
+        <h2>Your Prediction</h2>
+        <p>You predicted: <p><strong class="userPredictionDisplayText"></strong></p></p>
+    </div>
+</div>
+
+</div><p></p>
+
+{% endfor %}
+<a href="/">Go to home page</a>
+<script src="{{ url_for('static', filename='js/prediction_page_script.js') }}"></script>
+
+{% endblock %}
