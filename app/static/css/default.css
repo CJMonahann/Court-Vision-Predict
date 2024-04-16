@@ -1,0 +1,149 @@
+.container {
+    position: relative;
+}
+
+.nav-bar {
+    background-color: blue;
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    border-color: #000000;
+    border-style: solid;
+}
+
+.tab {
+    background-color:#579aff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-color: #000000;
+    border-style: solid;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+.head {
+    color: white;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+
+.search-box {
+    display: flex;
+    align-items: center;
+}
+
+.search-box input[type="text"] {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 5px;
+    border-color: #000000;
+    border-style: solid;
+    font-family: 'Roboto', sans-serif;
+}
+
+.search-box button {
+    background-color: #579aff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border-color: #000000;
+    border-style: solid;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+.head img {
+    width: 100px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.user-profile-tab {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    background-color: blue;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.tab.sign-up,
+.tab.login {
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+.user-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.news-box {
+    background-color: #579aff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: #000000;
+    margin-right: auto;
+    max-width: 600px;
+    border-style: solid;
+    font-family: 'Roboto', sans-serif;
+}
+
+.news-box h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+#news-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    color: #ffffff;
+    font-weight: bold;
+}
