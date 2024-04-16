@@ -2,6 +2,7 @@ from flask import render_template, jsonify, Flask, request, redirect, url_for
 from app import app
 import requests
 import sys
+from app import user_prediction as upd
 
 @app.route('/')
 def index():
@@ -30,5 +31,7 @@ def login_page():
 def signup_page():
     return render_template('signup.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/predictions')
+def predictions():
+    gameDate,teams,cvpPrediction=upd.__getPredictedGames()
+    return render_template('prediction-page.html',gameDate=gameDate,teams=teams,cvpPrediction=cvpPrediction)

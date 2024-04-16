@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.gameDate {
+    display: inline-block;
+    width: 90%;
+    height: auto;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.teamHome {
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 350px;
+    height: 200px;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.teamHome img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+.teamVisitor {
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 350px;
+    height: 200px;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.teamVisitor img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+.predictionCVPAI {
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 350px;
+    height: 200px;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.predictionUser {
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 350px;
+    height: 200px;
+    padding: 20px;  
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
