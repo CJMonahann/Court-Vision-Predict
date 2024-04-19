@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1> The Created Accounts </h1>
+    <div>
+        {% for acc in accounts %}
+            <div>
+                <p><b>#{{ acc.id }} (id)</b></p>
+                <b>
+                    <p><b>Name:</b> {{ acc.first_name }} {{ acc.last_name }}</p>
+                </b>
+                <p><b>Email:</b>{{ acc.email }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
