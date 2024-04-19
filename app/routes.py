@@ -27,11 +27,11 @@ def get_news():
     else:
         return jsonify({'error': 'Failed to fetch news'}), 500
 
-@app.route('/login.html')
+@app.route('/login')
 def login_page():
     return render_template('login.html')
 
-@app.route('/signup.html')
+@app.route('/signup')
 def signup_page():
     return render_template('signup.html')
 
