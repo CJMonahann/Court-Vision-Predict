@@ -203,7 +203,7 @@ class CollectPredicitionData:
         #returm the list with the simulated match features
         return match_stats
 
-    def collect_prediction_data(self, start_date='2024-04-09', end_date='2024-04-14', season='2023'):
+    def collect_prediction_data(self, start_date='2024-04-20', end_date='2024-05-05', season='2023'):
         start_date, end_date = self.__input_validation(start_date, end_date)
         testing_data = self.__get_current_schedule(start_date, end_date, season)
         #write all data to JSON file to be accessed for model training
