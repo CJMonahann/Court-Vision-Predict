@@ -8,6 +8,10 @@ from app import user_prediction as upd
 def index():
     return render_template('landingpage.html')
 
+@app.route('/testAuth')
+def test_auth():
+    return render_template('landing_page_authenticated.html')
+
 @app.route('/news')
 def get_news():
     api_key = '993afd44706849768cc4008d9ce87f2b'
@@ -23,11 +27,11 @@ def get_news():
     else:
         return jsonify({'error': 'Failed to fetch news'}), 500
 
-@app.route('/login.html')
+@app.route('/login.html', methods=["POST", "GET"])
 def login_page():
     return render_template('login.html')
 
-@app.route('/signup.html')
+@app.route('/signup.html', methods=["POST", "GET"])
 def signup_page():
     return render_template('signup.html')
 
