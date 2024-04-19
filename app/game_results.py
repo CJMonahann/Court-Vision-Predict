@@ -139,7 +139,7 @@ class GameResults:
         date_obj = date(yyyy, mm, dd)
         return date_obj
     
-    def get_results(self, start_date='2024-04-09', end_date='2024-04-14', season='2023'):
+    def get_results(self, start_date='2024-04-20', end_date='2024-05-05', season='2023'):
         start_date, end_date = self.__input_validation(start_date, end_date)
         testing_data = self.__get_games_history(start_date, end_date, season)
         #write all data to JSON file to be accessed for model training
