@@ -11,6 +11,8 @@ window.addEventListener('load', function() {
                 page = 'signup';
             } else if (tab.classList.contains('predictions')) {
                 page = 'predictions';
+            } else if (tab.classList.contains('user-profile-tab')) { // Handle user profile tab
+                page = 'user';
             } else {
                 page = 'login';
             }
@@ -26,6 +28,7 @@ window.addEventListener('load', function() {
         });
     }
 });
+
 
 function fetchNews() {
     // Fetch NBA news from Flask route
