@@ -35,6 +35,10 @@ def login_page():
 def signup_page():
     return render_template('signup.html')
 
+@app.route('/user')
+def user_page():
+    return render_template('user.html')
+
 @app.route('/predictions')
 def predictions():
     gameDate,teams,cvpPrediction=upd.__getPredictedGames()

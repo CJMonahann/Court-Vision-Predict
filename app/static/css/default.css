@@ -12,7 +12,7 @@
 }
 
 .tab {
-    background-color:#2037ff;
+    background-color:#43ABC9;
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -52,9 +52,9 @@
 
 .user-profile-tab {
     position: absolute;
-    top: 20px;
-    right: 10px;
-    background-color: blue;
+    top: 90px;
+    right: -5px;
+    background-color: #43ABC9;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -62,7 +62,7 @@
 }
 .signupTab,
 .loginTab {
-    background-color: blue;
+    background-color: #43ABC9;
     color: white;
     border-radius: 5px;
     cursor: pointer;

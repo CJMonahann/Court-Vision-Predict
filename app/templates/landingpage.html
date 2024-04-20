@@ -1,16 +1,18 @@
+<!-- landingpage.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Court Vision Predict</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/default.css') }}">
 </head>
-
 <body style="background-color:#2037ff">
     <div class="container">
-        <h1 class="head">
-            <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
-        </h1>
+        <a href="/" style="text-decoration:none">
+            <h1 class="head">
+                <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
+            </h1>
+        </a>
+        {% block user_navigation %}
         <div class="user-actions">
             <div class="tab sign-up" id="signupTab">Sign Up</div>
             <div class="tab" id="loginTab">Login</div>
@@ -20,20 +22,28 @@
             <div class="tab">Popular Players</div>
             <div class="tab" id="predictionsTab">Current Matches</div>
         </div>
-        <div class="news-box">
-            <h2>News</h2>
-            <ul id="news-list"></ul>
-        </div>
-        <div class="players-box">
-            <h2>Players Gallery</h2>
-            <ul></ul>
-        </div>
-        <div class="teams-box">
-            <h2>NBA teams</h2>
-            <ul id="teams-list"></ul>
-        </div>
-        <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
+        {% endblock %}
     </div>
-</body>
 
+    {% block additional_content %}
+    <div class="news-box">
+        <h2>News</h2>
+        <ul id="news-list"></ul>
+    </div>
+    <div class="players-box">
+        <h2>Players Gallery</h2>
+        <ul></ul>
+    </div>
+    <div class="teams-box">
+        <h2>NBA teams</h2>
+        <ul id="teams-list"></ul>
+    </div>
+    <a href="/" style="text-decoration:none">
+        <h1 class="head">
+            <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
+        </h1>
+    </a>
+    {% endblock %}
+    <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
+</body>
 </html>
