@@ -1,4 +1,6 @@
 from flask import render_template, jsonify, Flask, request, redirect, url_for
+from flask_wtf import FlaskForm
+from app import db
 from app import app
 import requests
 import sys
@@ -33,7 +35,15 @@ def login_page():
 
 @app.route('/signup.html', methods=["POST", "GET"])
 def signup_page():
-    return render_template('signup.html')
+    #form = signUpForm()
+    #if form.validate_on_submit():
+    #   password = form.password.data
+    #   logged_user = Accounts(username=form.username.data, email=form.email.data, password=password)
+    #   db.session.add(logged_user)
+    #   db.session.commit()
+    #   flash('Account created. Please log in.')
+    #   return redirect('/login')
+    return render_template('signup.html', form = form )
 
 @app.route('/predictions')
 def predictions():
