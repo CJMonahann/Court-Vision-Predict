@@ -81,6 +81,21 @@ def predictions():
 def popular_players_page():
     return render_template('popular_players.html')
 
+@app.route('/nba-players')
+def get_nba_players():
+    url = "https://api-nba-v1.p.rapidapi.com/players"
+    querystring = {"team": "1", "season": "2023"}
+    headers = {
+        "X-RapidAPI-Key": "3e1ea378a2msh4dc8e4f48876bd3p19ae7ejsnd145768cd66d",
+        "X-RapidAPI-Host": "api-nba-v1.p.rapidapi.com"
+    }
+    response = requests.get(url, headers=headers, params=querystring)
+    if response.status_code == 200:
+        players_data = response.json()
+        return jsonify(players_data)
+    else:
+        return jsonify({'error': 'Failed to fetch NBA players'}), 500
+
 @app.route('/teams_pages')
 def teams_page():
     return render_template('teams_page.html')

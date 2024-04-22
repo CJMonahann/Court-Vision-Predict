@@ -11,7 +11,25 @@
     border-style: solid;
 }
 
-.tab {
+.nav-tab {
+    background-color:#2037ff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-color: #000000;
+    border-style: solid;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+.user-tab {
     background-color:#43ABC9;
     color: #fff;
     padding: 5px 10px;
