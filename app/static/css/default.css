@@ -30,7 +30,7 @@
 }
 
 .user-tab {
-    background-color:#43ABC9;
+    background-color:gray;
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -72,7 +72,7 @@
     position: absolute;
     top: 90px;
     right: -5px;
-    background-color: #43ABC9;
+    background-color: gray;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -80,7 +80,7 @@
 }
 .signupTab,
 .loginTab {
-    background-color: #43ABC9;
+    background-color: gray;
     color: white;
     border-radius: 5px;
     cursor: pointer;
