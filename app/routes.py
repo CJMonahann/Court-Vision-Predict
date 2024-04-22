@@ -84,41 +84,28 @@ def predictions():
 def popular_players_page():
     return render_template('popular_players.html')
 
-@app.route('/nba_players')
-def get_nba_players():
-    url = "https://api-nba-v1.p.rapidapi.com/players"
-    querystring = {"team": "1", "season": "2023"}
+@app.route('/nba_standings')
+def get_nba_standings():
+    season = request.args.get('season', '2023')  # Default season if not provided
+
+    url = "https://api-nba-v1.p.rapidapi.com/standings"
+    querystring = {"league": "standard", "season": season}
     headers = {
         "X-RapidAPI-Key": os.getenv('RAPIDAPI_KEY'),
         "X-RapidAPI-Host": os.getenv('RAPIDAPI_HOST')
     }
+
     response = requests.get(url, headers=headers, params=querystring)
+
     if response.status_code == 200:
-        players_data = response.json()
-        return jsonify(players_data)
+        standings_data = response.json()
+        return jsonify(standings_data)
     else:
-        return jsonify({'error': 'Failed to fetch NBA players'}), 500
+        return jsonify({'error': 'Failed to fetch NBA standings'}), 500
 
 @app.route('/teams_pages')
 def teams_page():
     return render_template('teams_page.html')
-
-@app.route('/odds')
-def get_odds():
-    api_key = os.getenv('ODDS_API_KEY')
-    url = 'https://api.the-odds-api.com/v4/sports/basketball_nba/odds'
-    params = {
-        'regions': 'us',
-        'markets': 'h2h,spreads,totals',
-        'oddsFormat': 'american',
-        'apiKey': api_key
-    }
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
-        odds_data = response.json()
-        return jsonify(odds_data)
-    else:
-        return jsonify({'error': 'Failed to fetch odds'}), 500
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
 acc_obj = mae.MakeAccounts()
