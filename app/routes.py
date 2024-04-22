@@ -50,6 +50,8 @@ def user_page(user_id):
     # Render the user.html template and pass the user data
     return render_template('user.html', user=user)
 
+    #'user/1' or 'user/2' for example
+
 @app.route('/edit-profile/<int:user_id>', methods=['GET', 'POST'])
 def edit_profile(user_id):
     user = Accounts.query.get(user_id)
