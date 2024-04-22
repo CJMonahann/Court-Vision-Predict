@@ -1,4 +1,3 @@
-// Event listener for when the window has fully loaded
 window.addEventListener('load', function() {
     // Fetch news function
     fetchNews();
@@ -13,6 +12,10 @@ window.addEventListener('load', function() {
                 page = 'predictions';
             } else if (tab.classList.contains('user-profile-tab')) { // Handle user profile tab
                 page = 'user';
+            } else if (tab.id === 'playersTab') { // Handle Popular Players tab
+                page = 'popular_players';
+            } else if (tab.id === 'teamsTab') { // Handle #1 Popular Team tab
+                page = 'teams_pages';
             } else {
                 page = 'login';
             }
@@ -28,6 +31,7 @@ window.addEventListener('load', function() {
         });
     }
 });
+
 
 
 function fetchNews() {

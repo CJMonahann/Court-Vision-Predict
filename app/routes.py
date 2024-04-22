@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, Flask, request, redirect, url_for
+from flask import render_template, jsonify, Flask, request, redirect, url_for, abort
 from app import app, db
 import requests
 import sys
@@ -35,14 +35,55 @@ def login_page():
 def signup_page():
     return render_template('signup.html')
 
-@app.route('/user')
-def user_page():
-    return render_template('user.html')
+@app.route('/user/<int:user_id>')
+def user_page(user_id):
+    # Query the user from the database based on user_id
+    user = Accounts.query.get(user_id)
+
+    # If user not found, return a 404 error page
+    if not user:
+        abort(404)
+
+    # Render the user.html template and pass the user data
+    return render_template('user.html', user=user)
+
+@app.route('/edit-profile/<int:user_id>', methods=['GET', 'POST'])
+def edit_profile(user_id):
+    user = Accounts.query.get(user_id)
+    if not user:
+        abort(404)
+
+    if request.method == 'POST':
+        # Update user profile based on form data
+        user.first_name = request.form['first_name']
+        user.last_name = request.form['last_name']
+        user.email = request.form['email']
+        user.city = request.form['city']
+        user.state = request.form['state']
+        user.favorite_team = request.form['favorite_team']
+        # Update other fields similarly
+
+        # Commit changes to the database
+        db.session.commit()
+
+        # Redirect to the user profile page
+        return redirect(url_for('user_page', user_id=user.id))
+
+    # Render the edit profile template with the user data
+    return render_template('edit_profile.html', user=user)
 
 @app.route('/predictions')
 def predictions():
     gameDate,teams,cvpPrediction=upd.__getPredictedGames()
     return render_template('prediction-page.html',gameDate=gameDate,teams=teams,cvpPrediction=cvpPrediction)
+
+@app.route('/popular_players')
+def popular_players_page():
+    return render_template('popular_players.html')
+
+@app.route('/teams_pages')
+def teams_page():
+    return render_template('teams_page.html')
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
 acc_obj = mae.MakeAccounts()
