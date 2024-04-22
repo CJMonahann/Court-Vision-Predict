@@ -7,6 +7,22 @@
 {% endblock %}
 
 {% block additional_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedding Sports Odds Widget</title>
+</head>
+<body>
+    <!-- Insert the iframe code here -->
+    <iframe
+        title="Sports Odds Widget"
+        style="width: 20rem; height: 25rem; border: 1px solid black;"
+        src="https://widget.the-odds-api.com/v1/sports/basketball_nba/events/?accessKey= wk_f8f4078b22589167a690852cdabb24ba&bookmakerKeys=fanduel&oddsFormat=american&markets=h2h%2Cspreads%2Ctotals&marketNames=h2h%3AMoneyline%2Cspreads%3ASpreads%2Ctotals%3AOver%2FUnder"
+    ></iframe>
+</body>
+</html>
 <a href="/" style="text-decoration:none">
     <h1 class="head">
         <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict

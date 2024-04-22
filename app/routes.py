@@ -1,12 +1,15 @@
 from flask import render_template, jsonify, Flask, request, redirect, url_for, abort
 from app import app, db
+from dotenv import load_dotenv
 import requests
-import sys
+import sys, os
 from app import user_prediction as upd
 
 #ADDED AS AN EXAMPLE FOR THE DUMMY DATA
 from app import make_accounts_example as mae
 from app.models import Accounts
+
+load_dotenv()  # Load environment variables from .env file
 
 @app.route('/')
 def index():
@@ -14,7 +17,7 @@ def index():
 
 @app.route('/news')
 def get_news():
-    api_key = '993afd44706849768cc4008d9ce87f2b'
+    api_key = os.getenv('NEWS_API_KEY')
     url = 'https://newsapi.org/v2/top-headlines'
     params = {
         'country': 'us',
@@ -81,13 +84,13 @@ def predictions():
 def popular_players_page():
     return render_template('popular_players.html')
 
-@app.route('/nba-players')
+@app.route('/nba_players')
 def get_nba_players():
     url = "https://api-nba-v1.p.rapidapi.com/players"
     querystring = {"team": "1", "season": "2023"}
     headers = {
-        "X-RapidAPI-Key": "3e1ea378a2msh4dc8e4f48876bd3p19ae7ejsnd145768cd66d",
-        "X-RapidAPI-Host": "api-nba-v1.p.rapidapi.com"
+        "X-RapidAPI-Key": os.getenv('RAPIDAPI_KEY'),
+        "X-RapidAPI-Host": os.getenv('RAPIDAPI_HOST')
     }
     response = requests.get(url, headers=headers, params=querystring)
     if response.status_code == 200:
@@ -99,6 +102,23 @@ def get_nba_players():
 @app.route('/teams_pages')
 def teams_page():
     return render_template('teams_page.html')
+
+@app.route('/odds')
+def get_odds():
+    api_key = os.getenv('ODDS_API_KEY')
+    url = 'https://api.the-odds-api.com/v4/sports/basketball_nba/odds'
+    params = {
+        'regions': 'us',
+        'markets': 'h2h,spreads,totals',
+        'oddsFormat': 'american',
+        'apiKey': api_key
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        odds_data = response.json()
+        return jsonify(odds_data)
+    else:
+        return jsonify({'error': 'Failed to fetch odds'}), 500
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
 acc_obj = mae.MakeAccounts()
