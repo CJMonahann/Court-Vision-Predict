@@ -124,9 +124,9 @@ def pop_accounts(acc_obj = acc_obj):
     return render_template('pop_accounts_example.html', accounts = all_accounts)
 
 collect_players = cPlrs.CollectPlayers()
+#all_teams = [31, 19, 14, 23, 8, 11, 30, 17, 28, 16, 29, 40, 9, 22, 25, 41, 5, 1, 20, 26, 10, 6, 15, 7, 21, 38, 4, 27, 24, 2]
 @app.route('/pop_players')
-def pop_players(collect_players = collect_players, teams_arr = [31, 19, 14, 23, 8, 11, 30, 17, 28, 16, 29, 40, 9, 22, 25, 
-                                                                41, 5, 1, 20, 26, 10, 6, 15, 7, 21, 38, 4, 27, 24, 2]):
+def pop_players(collect_players = collect_players, teams_arr = [1]):
     if collect_players.num_calls <= 0: #will only be called once every time you run the flask app
         db.drop_all()
         db.create_all()
