@@ -28,7 +28,6 @@ class CollectPlayers():
         #variables
         self.__num_API_calls += 1
         MAX_CALLS = 401 #allowed called to be made to the API per minute (we have a restriction)
-        team_id = str(team_id)
 
         if "response" in response:
             response = response["response"]

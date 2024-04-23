@@ -93,7 +93,7 @@ class Players(db.Model):
     __tablename__ = 'Players'
     id = db.Column(db.Integer, primary_key=True)
     api_id = db.Column(db.Integer, unique=False) #the player's ID number from the API
-    team_id = db.Column(db.String(5))
+    team_id = db.Column(db.Integer, unique=False)
     first_name = db.Column(db.String(30), unique=False)
     last_name = db.Column(db.String(30), unique=False)
     date_of_birth = db.Column(db.String(30), unique=False)
