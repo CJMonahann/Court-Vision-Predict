@@ -8,6 +8,7 @@ from app import user_prediction as upd
 #ADDED AS AN EXAMPLE FOR THE DUMMY DATA
 from app import make_accounts_example as mae
 from app.models import Accounts
+from app import collect_players as cPlrs
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -121,3 +122,16 @@ def pop_accounts(acc_obj = acc_obj):
 
     all_accounts = db.session.query(Accounts).all()
     return render_template('pop_accounts_example.html', accounts = all_accounts)
+
+collect_players = cPlrs.CollectPlayers()
+#all_teams = [31, 19, 14, 23, 8, 11, 30, 17, 28, 16, 29, 40, 9, 22, 25, 41, 5, 1, 20, 26, 10, 6, 15, 7, 21, 38, 4, 27, 24, 2]
+@app.route('/pop_players')
+def pop_players(collect_players = collect_players, teams_arr = [1]):
+    if collect_players.num_calls <= 0: #will only be called once every time you run the flask app
+        db.drop_all()
+        db.create_all()
+        print('DATABASE REFRESHED - Collecting Players ...')
+        collect_players.get_players(teams_arr) #collects players for team used in our app
+
+    #all_accounts = db.session.query(Accounts).all()
+    return render_template('landingpage.html')
