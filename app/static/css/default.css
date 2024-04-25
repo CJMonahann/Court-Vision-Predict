@@ -3,7 +3,7 @@
 }
 
 .nav-bar {
-    background-color: blue;
+    background-color: #ffffff;
     display: flex;
     padding: 10px;
     justify-content: space-between;
@@ -11,8 +11,26 @@
     border-style: solid;
 }
 
-.tab {
-    background-color:#579aff;
+.nav-tab {
+    background-color:#2037ff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-color: #000000;
+    border-style: solid;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+.user-tab {
+    background-color:gray;
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -44,40 +62,6 @@
      1px  1px 0 #000;
 }
 
-
-.search-box {
-    display: flex;
-    align-items: center;
-}
-
-.search-box input[type="text"] {
-    padding: 5px;
-    border-radius: 5px;
-    border: none;
-    margin-right: 5px;
-    border-color: #000000;
-    border-style: solid;
-    font-family: 'Roboto', sans-serif;
-}
-
-.search-box button {
-    background-color: #579aff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    border-color: #000000;
-    border-style: solid;
-    font-family: 'Roboto', sans-serif;
-    font-weight: bold;
-    text-shadow: 
-    -1px -1px 0 #000,  
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000;
-}
-
 .head img {
     width: 100px;
     height: auto;
@@ -86,17 +70,17 @@
 
 .user-profile-tab {
     position: absolute;
-    top: 20px;
-    right: 10px;
-    background-color: blue;
+    top: 90px;
+    right: -5px;
+    background-color: gray;
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
 }
-.tab.sign-up,
-.tab.login {
-    background-color: blue;
+.signupTab,
+.loginTab {
+    background-color: gray;
     color: white;
     border-radius: 5px;
     cursor: pointer;
@@ -117,7 +101,7 @@
 }
 
 .news-box {
-    background-color: #579aff;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -129,21 +113,57 @@
 }
 
 .news-box h2 {
-    color: #ffffff;
+    color: #000000;
     font-size: 24px;
     margin-bottom: 10px;
     font-weight: bold;
     text-shadow: 
-    -1px -1px 0 #000,  
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000;
+    -1px -1px 0 #ffffff,  
+     1px -1px 0 #ffffff,
+    -1px  1px 0 #ffffff,
+     1px  1px 0 #ffffff;
 }
 
 #news-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    color: #ffffff;
+    color: #000000;
     font-weight: bold;
+}
+
+.players-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: #000000;
+    max-width: 600px;
+    margin-left: auto;
+    border-style: solid;
+    font-family: 'Roboto', sans-serif;
+}
+
+.teams-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: #000000;
+    max-width: 600px;
+    margin-right: auto;
+    border-style: solid;
+    font-family: 'Roboto', sans-serif;
+}
+
+.teams-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-color: #000000;
+    margin-right: auto;
+    max-width: 600px;
+    border-style: solid;
+    font-family: 'Roboto', sans-serif;
 }

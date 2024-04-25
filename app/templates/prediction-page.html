@@ -1,8 +1,12 @@
-{% extends "base.html" %}
+<!-- prediciton-page.html -->
+{% extends "landingpage.html" %}
+{% block user_nav %}
+    {% include "user_nav_auth.html" %}
+{% endblock %}
 
-{% block content %}
+{% block additional_content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prediction_page.css') }}">
-
+<script src="{{ url_for('static', filename='javascript/prediction_page_script.js') }}"></script>
 <!-- Game Date | Match Up -->
 {% for i in range(gameDate|length) %}
 <div class="gameDate">
@@ -52,7 +56,9 @@
 </div><p></p>
 
 {% endfor %}
-<a href="/">Go to home page</a>
-<script src="{{ url_for('static', filename='javascript/prediction_page_script.js') }}"></script>
-
+<a href="/" style="text-decoration:none">
+    <h1 class="head">
+        <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
+    </h1>
+</a>
 {% endblock %}

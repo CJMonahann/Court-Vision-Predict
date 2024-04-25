@@ -1,34 +1,41 @@
+<!-- landingpage.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Court Vision Predict</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/default.css') }}">
 </head>
-<body style="background-color:#601EF9">
+<body style="background-color:#2037ff">
     <div class="container">
-        <h1 class="head">
-            <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">
-            Court Vision Predict
-        </h1>
+        <a href="/" style="text-decoration:none">
+            <h1 class="head">
+                <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
+            </h1>
+        </a>
+        {% block user_nav %}
         <div class="user-actions">
-            <div class="tab sign-up">Sign Up</div>
-            <div class="tab login">Login</div>
+            <div class="user-tab" id="signupTab">Sign Up</div>
+            <div class="user-tab" id="loginTab">Login</div>
         </div>
         <div class="nav-bar">
-            <div class="tab">#1 Popular Team</div>
-            <div class="tab">Popular Players</div>
-            <div class="tab">Current Matches</div>
-            <div class="search-box">
-                <input type="text" placeholder="Search...">
-                <button type="submit">Search</button>
-            </div>
+            <div class="nav-tab" id="teamsTab">NBA Teams</div>
+            <div class="nav-tab" id="playersTab">NBA Players</div>
+            <div class="nav-tab" id="predictionsTab">Current Matches</div>
         </div>
-        <div class="news-box">
-            <h2>News</h2>
-            <ul id="news-list">
-            </ul>
-        </div>
+        {% endblock %}
     </div>
+
+    {% block additional_content %}
+    <div class="news-box">
+        <h2>News</h2>
+        <ul id="news-list"></ul>
+    </div>
+    <a href="/" style="text-decoration:none">
+        <h1 class="head">
+            <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
+        </h1>
+    </a>
+    {% endblock %}
     <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,59 @@
+<!-- teams_page.html -->
+
+{% extends "landingpage.html" %}
+
+{% block user_nav %}
+    {% include "user_nav.html" %}
+{% endblock %}
+
+{% block additional_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Standings</title>
+    <style>
+        .tab {
+            display: none;
+        }
+        #tabs-container {
+            margin-bottom: 20px;
+        }
+        #tabs-container button {
+            padding: 10px 20px;
+            margin-right: 5px;
+            cursor: pointer;
+            border-color: black;
+            border-style: solid;
+            border-radius: 5px;
+        }
+        #team-info-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 400px;
+            background-color: #f9f9f9;
+            border-color: black;
+            border-style: solid;
+            border-radius: 5px;
+        }
+        .team-info {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="tabs-container">
+    </div>
+    <div id="team-info-box">
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<a href="/" style="text-decoration:none">
+    <h1 class="head">
+        <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
+    </h1>
+</a>
+{% endblock %}
