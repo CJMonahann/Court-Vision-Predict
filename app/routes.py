@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, Flask, request, redirect, url_for, abort
+from flask import render_template, jsonify, Flask, request, redirect, url_for, abort, sessions
 from app import app, db
 from dotenv import load_dotenv
 import requests
@@ -9,6 +9,8 @@ from app import user_prediction as upd
 from app import make_accounts_example as mae
 from app.models import Accounts
 from app import collect_players as cPlrs
+
+from app.forms import signUpForm # Makes forms functional in routes
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -37,7 +39,15 @@ def login_page():
 
 @app.route('/signup')
 def signup_page():
-    return render_template('signup.html')
+    form = signUpForm() #should in theory allow user data to be sent to db, or at least set up the ability to do so
+    if form.validate_on_submit():
+       password = form.password.data
+       logged_user = Accounts(username=form.username.data, email=form.email.data, password=password)
+       db.session.add(logged_user)
+       db.session.commit()
+    #   flash('Account created. Please log in.') #currently nonfunctional, reminder to rewatch tutorial on flash messages
+       return redirect('/login') #should send user to the login page once account is in db for final confirmation
+    return render_template('signup.html', form = form )
 
 @app.route('/user/<int:user_id>')
 def user_page(user_id):
