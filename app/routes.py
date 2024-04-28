@@ -3,6 +3,7 @@ from app import app, db
 import requests
 import sys
 from app import user_prediction as upd
+import os
 
 #ADDED AS AN EXAMPLE FOR THE DUMMY DATA
 from app import make_accounts_example as mae
@@ -14,7 +15,7 @@ def index():
 
 @app.route('/news')
 def get_news():
-    api_key = '993afd44706849768cc4008d9ce87f2b'
+    api_key = os.getenv('__NEWS_API_KEY')
     url = 'https://newsapi.org/v2/top-headlines'
     params = {
         'country': 'us',
@@ -37,8 +38,28 @@ def signup_page():
 
 @app.route('/predictions')
 def predictions():
+    userID = '1' # Change to user id or user's predictions dataset to retrieve user's predictions from file
     gameDate,teams,cvpPrediction=upd.__getPredictedGames()
-    return render_template('prediction-page.html',gameDate=gameDate,teams=teams,cvpPrediction=cvpPrediction)
+    return render_template('prediction-page.html',user_id=userID,gameDate=gameDate,teams=teams,cvpPrediction=cvpPrediction)
+
+@app.route('/prediction/submit', methods=['POST'])
+def userPredictionSubmit():
+    user_id = request.form['user_id']
+    game_date = request.form['game_date']
+    home_team = request.form['home_team']
+    visiting_team = request.form['visiting_team']
+    user_prediction = request.form['prediction']
+    print(user_id,game_date,home_team,visiting_team,user_prediction)
+    
+    existing_prediction = upd.UserPrediction.query.filter_by(user_id=user_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction).first()
+    if existing_prediction:
+        return jsonify({'success': False, 'message': 'User has already made a prediction for this game'})
+
+    new_prediction = upd.UserPrediction(user_id=user_id, game_date=game_date,  home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction)
+    db.session.add(new_prediction)
+    db.session.commit()
+
+    return jsonify({'success': True, 'message': 'Prediction submitted successfully'})
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
 acc_obj = mae.MakeAccounts()
