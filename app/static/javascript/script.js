@@ -63,7 +63,9 @@ function fetchNews() {
 document.addEventListener('DOMContentLoaded', () => {
     const tabsContainer = document.getElementById('tabs-container');
     const teamInfoBox = document.getElementById('team-info-box');
+    const playerInfoBox = document.getElementById('player-info-box'); // Added playerInfoBox
 
+    // Define NBA teams data (for buttons)
     const teams = [
         { id: 31, name: 'San Antonio Spurs', logoUrl: 'https://upload.wikimedia.org/wikipedia/en/a/a2/San_Antonio_Spurs.svg' },
         { id: 19, name: 'Memphis Grizzlies', logoUrl: 'https://upload.wikimedia.org/wikipedia/en/f/f1/Memphis_Grizzlies.svg' },
@@ -95,48 +97,48 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 27, name: 'Philadelphia 76ers', logoUrl: 'https://upload.wikimedia.org/wikipedia/en/0/0e/Philadelphia_76ers_logo.svg' },
         { id: 24, name: 'New York Knicks', logoUrl: 'https://upload.wikimedia.org/wikipedia/en/2/25/New_York_Knicks_logo.svg' },
         { id: 2, name: 'Boston Celtics', logoUrl: 'https://upload.wikimedia.org/wikipedia/en/8/8f/Boston_Celtics.svg' }
-    ];    
+    ];
 
+    // Create buttons for each NBA team
     teams.forEach(team => {
         const button = document.createElement('button');
         button.textContent = team.name;
         button.addEventListener('click', () => {
             fetchTeamInfo(team.id, team.name, team.logoUrl);
+            fetchPlayerInfo(team.id); // Fetch players for the selected team
         });
         tabsContainer.appendChild(button);
     });
 
     // Function to fetch and display team information
-    function fetchTeamInfo(teamId, teamName, logoUrl) {
-        const url = `https://api-nba-v1.p.rapidapi.com/standings`;
-        const querystring = {
-            league: 'standard',
-            season: '2023',
-            team: teamId
-        };
-        const headers = {
-            'X-RapidAPI-Key': '3e1ea378a2msh4dc8e4f48876bd3p19ae7ejsnd145768cd66d',
-            'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
-        };
+function fetchTeamInfo(teamId, teamName, logoUrl) {
+    // Construct the URL with the query parameter 'from_db=true'
+    const url = `/populate_nba_teams?from_db=true`;
 
-        fetch(`${url}?${new URLSearchParams(querystring)}`, { headers })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(teamData => {
-                displayTeamInfo(teamName, teamData, logoUrl);
-            })
-            .catch(error => {
-                console.error('Error fetching team data:', error);
-                teamInfoBox.textContent = `Error fetching team data: ${error.message}`;
-            });
-    }
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch NBA teams: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const teamData = data.find(team => team.api_id === teamId);
+            if (teamData) {
+                displayTeamInfo(teamData, logoUrl);
+                clearPlayerInfo(); // Clear player information box when displaying new team
+            } else {
+                console.error(`Team with ID ${teamId} not found.`);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching NBA teams:', error);
+            teamInfoBox.textContent = `Error fetching NBA teams: ${error.message}`;
+        });
+}
 
-    // Function to display team information including logo
-    function displayTeamInfo(teamName, teamData, logoUrl) {
+    // Function to display team information
+    function displayTeamInfo(teamData, logoUrl) {
         teamInfoBox.innerHTML = ''; // Clear previous content
 
         const teamInfo = document.createElement('div');
@@ -145,22 +147,141 @@ document.addEventListener('DOMContentLoaded', () => {
         // Display team logo
         const logoImg = document.createElement('img');
         logoImg.src = logoUrl;
-        logoImg.alt = `${teamName} Logo`;
+        logoImg.alt = `${teamData.name} Logo`;
         logoImg.style.width = '100px'; // Adjust size as needed
         teamInfo.appendChild(logoImg);
 
-        // Display other team information
+        // Display team information
         teamInfo.innerHTML += `
-            <h2>${teamName}</h2>
-            <p><strong>Conference:</strong> ${teamData.response[0].conference.name}</p>
-            <p><strong>Division:</strong> ${teamData.response[0].division.name}</p>
-            <p><strong>Wins:</strong> ${teamData.response[0].win.total}</p>
-            <p><strong>Losses:</strong> ${teamData.response[0].loss.total}</p>
-            <p><strong>Last 10 Games:</strong> ${teamData.response[0].win.lastTen}-${teamData.response[0].loss.lastTen}</p>
-            <p><strong>Win Percentage:</strong> ${teamData.response[0].win.percentage}</p>
-            <p><strong>Streak:</strong> ${teamData.response[0].streak}</p>
+            <h2>${teamData.name}</h2>
+            <p><strong>Nickname:</strong> ${teamData.nickname}</p>
+            <p><strong>Abreviation:</strong> ${teamData.code}</p>
+            <p><strong>Conference:</strong> ${teamData.conference}</p>
+            <p><strong>Wins Total:</strong> ${teamData.wins}</p>
+            <p><strong>Losses Total:</strong> ${teamData.losses}</p>
+            <p><strong>Win %:</strong> ${teamData.win_percentage}</p>
+            <p><strong>Win Streak:</strong> ${teamData.streak}</p>
         `;
 
         teamInfoBox.appendChild(teamInfo);
     }
+    
+// Function to clear player information box
+function clearPlayerInfo() {
+    playerInfoBox.innerHTML = '';
+}
+
+async function fetchPlayerInfo(teamId) {
+    const url = `/nba_players/${teamId}?season=2023`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch NBA players: ${response.statusText}`);
+        }
+        const data = await response.json();
+        const playersData = data.players_data;
+        console.log("Players Data:", playersData); // Log players data
+        if (Array.isArray(playersData) && playersData.length > 0) {
+            clearPlayerInfo();
+            playersData.forEach(player => {
+                displayPlayerInfo(player);
+            });
+        } else {
+            console.error('No player data found.');
+        }
+    } catch (error) {
+        console.error('Error fetching NBA players:', error);
+    }
+}
+
+// Function to display player information
+function displayPlayerInfo(playerData) {
+    const playerInfo = document.createElement('div');
+
+    const jerseyNumber = document.createElement('span');
+    jerseyNumber.textContent = `#${playerData.leagues.standard.jersey || 'N/A'}: `;
+    playerInfo.appendChild(jerseyNumber);
+
+    const playerName = document.createElement('span');
+    playerName.textContent = `${playerData.firstname || 'N/A'} ${playerData.lastname || 'N/A'}`;
+    playerInfo.appendChild(playerName);
+
+    const playerPosition = document.createElement('span');
+    playerPosition.textContent = ` - ${playerData.leagues.standard.pos || 'N/A'}`;
+    playerInfo.appendChild(playerPosition);
+
+    playerInfoBox.appendChild(playerInfo);
+
+    // Create a button for displaying player info
+    const playerButton = document.createElement('button');
+    playerButton.textContent = 'Show Stats';
+
+    // Event listener for "Show Stats" button
+    playerButton.addEventListener('click', async function() {
+        try {
+            const playerStats = await fetchPlayerStats(playerData.id);
+            // Format player stats
+            const formattedStats = formatPlayerStats(playerStats);
+            // Display formatted player stats
+            alert(`${formattedStats}`);
+        } catch (error) {
+            console.error('Error fetching player stats:', error);
+        }
+    });
+
+    playerInfo.appendChild(playerButton);
+
+    // Show the player info box
+    playerInfoBox.style.display = 'block';
+}
+
+// Function to fetch player statistics
+async function fetchPlayerStats(playerId) {
+    const url = `/nba_player_statistics/${playerId}?season=2023`;
+
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch player statistics: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data.player_statistics;
+}
+
+// Function to format player statistics into a readable format
+function formatPlayerStats(playerStats) {
+    let formattedStats = '';
+    for (const [key, value] of Object.entries(playerStats)) {
+        formattedStats += `${key.replace('_', ' ')}: ${Number(value).toFixed(2)}\n`;
+    }
+    return formattedStats;
+}
+
+// Event listener for "Show Stats" button
+playerButton.addEventListener('click', async function() {
+    try {
+        const playerStats = await fetchPlayerStats(playerData.id);
+        // Format player stats
+        const formattedStats = formatPlayerStats(playerStats);
+        // Display formatted player stats
+        alert(`Player Stats Averages:\n${formattedStats}`);
+    } catch (error) {
+        console.error('Error fetching player stats:', error);
+    }
 });
+z
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+

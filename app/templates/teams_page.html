@@ -40,12 +40,30 @@
         .team-info {
             margin-bottom: 10px;
         }
+        #player-info-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 400px;
+            background-color: #f9f9f9;
+            border-color: black;
+            border-style: solid;
+            border-radius: 5px;
+        }
+        .player-info {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-    <div id="tabs-container">
-    </div>
+    <div id="tabs-container"></div>
     <div id="team-info-box">
+        <div class="team-info"></div>
+    </div>
+    
+    <!-- Add player info box -->
+    <div id="player-info-box">
+        <!-- Player information will be displayed here -->
+        <div class="player-info"></div>
     </div>
     <script src="script.js"></script>
 </body>
