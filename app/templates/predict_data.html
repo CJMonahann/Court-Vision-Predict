@@ -5,8 +5,9 @@
     <div>
         {% for acc in pred %}
             <div>
-                <p><b>Account # {{ acc.user_id }} (id)</b></p>
+                <p><b>Account ID # {{ acc.user_id }}</b></p>
                 <b>
+                    <p><b>Form:</b> {{ acc.form_id }} (id)</p>
                     <p><b>Date:</b> {{ acc.game_date }}</p>
                     <p><b>Home:</b> {{ acc.home_team }}</p>
                     <p><b>Visit:</b> {{ acc.visiting_team }}</p>

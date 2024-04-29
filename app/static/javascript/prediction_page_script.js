@@ -1,8 +1,37 @@
 // Wait for the DOM content to be loaded before adding event listener
 document.addEventListener("DOMContentLoaded", function() {
+    // Function to load user predictions from the server
+    function loadUserPredictions() {
+        // Iterate through each prediction form
+        predictionForms.forEach(function(predictionForm) {
+            // Load previously submitted prediction from database, if any
+            var userPrediction = predictionForm.nextElementSibling;
+            var formId = predictionForm.dataset.formId;
+
+            // Make AJAX request to fetch prediction for the current form
+            fetch('/prediction/submit?user_id=1&form_id=' + formId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Display the user's prediction
+                        userPrediction.style.display = "block";
+                        var predictionDisplay = userPrediction.querySelector(".userPredictionDisplayText");
+                        predictionDisplay.textContent = data.prediction;
+                        predictionForm.style.display = "none";
+                    }
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('Error:', error);
+                });
+        });
+    }
     // Select all prediction forms
     var predictionForms = document.querySelectorAll(".predictionForm");
 
+    // Call the function to load user predictions when the page loads
+    loadUserPredictions();
+        
     // Loop through each prediction form
     predictionForms.forEach(function(predictionForm) {
         // Select the submit button within the current form

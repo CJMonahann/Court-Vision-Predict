@@ -38,28 +38,45 @@ def signup_page():
 
 @app.route('/predictions')
 def predictions():
-    userID = '1' # Change to user id or user's predictions dataset to retrieve user's predictions from file
+    userID = 1 # Change to the current session's user id 
     gameDate,teams,cvpPrediction=upd.__getPredictedGames()
     return render_template('prediction-page.html',user_id=userID,gameDate=gameDate,teams=teams,cvpPrediction=cvpPrediction)
 
-@app.route('/prediction/submit', methods=['POST'])
+@app.route('/prediction/submit', methods=['POST', 'GET'])
 def userPredictionSubmit():
-    user_id = request.form['user_id']
-    game_date = request.form['game_date']
-    home_team = request.form['home_team']
-    visiting_team = request.form['visiting_team']
-    user_prediction = request.form['prediction']
-    print(user_id,game_date,home_team,visiting_team,user_prediction)
+    if request.method == 'POST':
+        user_id = request.form['user_id']
+        form_id = request.form['form_id']
+        game_date = request.form['game_date']
+        home_team = request.form['home_team']
+        visiting_team = request.form['visiting_team']
+        user_prediction = request.form['prediction']
+        print(user_id,game_date,home_team,visiting_team,user_prediction)
+        
+        existing_prediction = UserPrediction.query.filter_by(user_id=user_id, form_id=form_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction).first()
+        if existing_prediction:
+            return jsonify({'success': False, 'message': 'User has already made a prediction for this game'})
+
+        new_prediction = UserPrediction(user_id=user_id, form_id=form_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction)
+        db.session.add(new_prediction)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Prediction submitted successfully'})
+    elif request.method == 'GET':
+        user_id = request.args.get('user_id')
+        form_id = request.args.get('form_id')
+        game_date = request.args.get('game_date')
+        home_team = request.args.get('home_team')
+        visiting_team = request.args.get('visiting_team')
+        user_prediction = request.args.get('prediction')
     
-    existing_prediction = UserPrediction.query.filter_by(user_id=user_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction).first()
-    if existing_prediction:
-        return jsonify({'success': False, 'message': 'User has already made a prediction for this game'})
+        # Query the database for the user's prediction for the specified form
+        user_submission = UserPrediction.query.filter_by(user_id=user_id, form_id=form_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction).first()
+    
+        if user_submission:
+            return jsonify({'success': True, 'prediction': user_submission.user_prediction})
+        else:
+            return jsonify({'success': False, 'message': 'No prediction found for this game'})
 
-    new_prediction = UserPrediction(user_id=user_id, game_date=game_date,  home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction)
-    db.session.add(new_prediction)
-    db.session.commit()
-
-    return jsonify({'success': True, 'message': 'Prediction submitted successfully'})
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
 acc_obj = mae.MakeAccounts()

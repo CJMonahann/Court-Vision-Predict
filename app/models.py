@@ -178,6 +178,7 @@ class AccountVsModelPredicitons(db.Model):
 class UserPrediction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey("Accounts.id", ondelete="CASCADE"))
+    form_id = db.Column(db.Integer, nullable=False)
     game_date = db.Column(db.String(255), nullable=False)
     home_team = db.Column(db.String(255), nullable=False)
     visiting_team = db.Column(db.String(255), nullable=False)

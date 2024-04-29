@@ -1,5 +1,3 @@
-from app import db
-from flask_sqlalchemy import SQLAlchemy
 from app.ai_model import AppDecisionTree as ADT
 
 def __getPredictedGames():
@@ -12,5 +10,4 @@ def __getPredictedGames():
             gameDate.append(date)
             teams.append([game[i]['home'],game[i]['visitors']])
             cvpPrediction.append(game[i]['prediction'])
-
     return gameDate,teams,cvpPrediction
