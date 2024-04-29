@@ -1,0 +1,26 @@
+<!-- error.html -->
+{% extends "landingpage.html" %}
+
+{% block user_nav %}
+    {% include "user_nav.html" %}
+{% endblock %}
+
+{% block additional_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+</head>
+<body>
+    <h1>Error</h1>
+    <p>An error occurred: {{ error }}</p>
+</body>
+</html>
+<a href="/" style="text-decoration:none">
+    <h1 class="head">
+        <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
+    </h1>
+</a>
+{% endblock %}

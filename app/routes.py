@@ -4,12 +4,13 @@ from dotenv import load_dotenv
 import requests
 import sys, os
 from app import user_prediction as upd
-
+from .models import db, Players
+from .nba_data_teams import populate_nba_teams, get_nba_standings
+from .nba_data_players import fetch_players_from_api, fetch_player_statistics
 #ADDED AS AN EXAMPLE FOR THE DUMMY DATA
 from app import make_accounts_example as mae
 from app.models import Accounts
 from app import collect_players as cPlrs
-
 from app.forms import signUpForm # Makes forms functional in routes
 from datetime import timedelta
 app.permanent_session_lifetime = timedelta(days=5) #Sets the maximum time before user is logged out as 5 days
@@ -106,28 +107,9 @@ def predictions():
 def popular_players_page():
     return render_template('popular_players.html')
 
-@app.route('/nba_standings')
-def get_nba_standings():
-    season = request.args.get('season', '2023')  # Default season if not provided
-
-    url = "https://api-nba-v1.p.rapidapi.com/standings"
-    querystring = {"league": "standard", "season": season}
-    headers = {
-        "X-RapidAPI-Key": os.getenv('RAPIDAPI_KEY'),
-        "X-RapidAPI-Host": os.getenv('RAPIDAPI_HOST')
-    }
-
-    response = requests.get(url, headers=headers, params=querystring)
-
-    if response.status_code == 200:
-        standings_data = response.json()
-        return jsonify(standings_data)
-    else:
-        return jsonify({'error': 'Failed to fetch NBA standings'}), 500
-
 @app.route('/teams_pages')
 def teams_page():
-    return render_template('teams_page.html')
+        return render_template('teams_page.html')
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
 acc_obj = mae.MakeAccounts()
@@ -143,7 +125,7 @@ def pop_accounts(acc_obj = acc_obj):
     return render_template('pop_accounts_example.html', accounts = all_accounts)
 
 collect_players = cPlrs.CollectPlayers()
-#all_teams = [31, 19, 14, 23, 8, 11, 30, 17, 28, 16, 29, 40, 9, 22, 25, 41, 5, 1, 20, 26, 10, 6, 15, 7, 21, 38, 4, 27, 24, 2]
+all_teams = [31, 19, 14, 23, 8, 11, 30, 17, 28, 16, 29, 40, 9, 22, 25, 41, 5, 1, 20, 26, 10, 6, 15, 7, 21, 38, 4, 27, 24, 2]
 @app.route('/pop_players')
 def pop_players(collect_players = collect_players, teams_arr = [1]):
     if collect_players.num_calls <= 0: #will only be called once every time you run the flask app
@@ -154,3 +136,51 @@ def pop_players(collect_players = collect_players, teams_arr = [1]):
 
     #all_accounts = db.session.query(Accounts).all()
     return render_template('landingpage.html')
+
+# Route to populate NBA teams
+@app.route('/populate_nba_teams', methods=['GET'])
+def populate_nba_teams_route():
+    # Check if the request is from the database
+    from_db = request.args.get('from_db', '').lower() == 'true'
+    # Call populate_nba_teams function based on the source of data
+    return populate_nba_teams() if from_db else populate_nba_teams(standings_data=get_nba_standings())
+
+# Route to get NBA standings
+@app.route('/nba_standings', methods=['GET'])
+def get_nba_standings_route():
+    # Get the season from the request, default is '2023'
+    season = request.args.get('season', '2023')
+    # Return NBA standings for the requested season
+    return jsonify(get_nba_standings(season))
+
+# Route to fetch NBA players for a specific team
+@app.route('/nba_players/<int:team_id>', methods=['GET'])
+def fetch_nba_players_route(team_id):
+    # Get the season from the request, default is '2023'
+    season = request.args.get('season', '2023')
+    try:
+        # Fetch player data for the specified team and season
+        players_data = fetch_players_from_api(team_id, season)
+        # Return the player data as JSON response
+        return jsonify({'status': 'success', 'players_data': players_data})
+    except Exception as e:
+        # If an error occurs during fetching, return an error message
+        return jsonify({'status': 'error', 'message': str(e)})
+
+# Route to fetch NBA player statistics for a specific player
+@app.route('/nba_player_statistics/<int:player_id>', methods=['GET'])
+def fetch_nba_player_statistics_route(player_id):
+    # Get the season from the request, default is '2023'
+    season = request.args.get('season', '2023')
+    try:
+        # Fetch player statistics for the specified player and season
+        player_statistics = fetch_player_statistics(player_id, season)
+        # Return the player statistics as JSON response
+        return jsonify({'status': 'success', 'player_statistics': player_statistics})
+    except Exception as e:
+        # If an error occurs during fetching, return an error message
+        return jsonify({'status': 'error', 'message': str(e)})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    
