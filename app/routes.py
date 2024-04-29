@@ -7,7 +7,7 @@ import os
 
 #ADDED AS AN EXAMPLE FOR THE DUMMY DATA
 from app import make_accounts_example as mae
-from app.models import Accounts
+from app.models import Accounts, UserPrediction
 
 @app.route('/')
 def index():
@@ -51,11 +51,11 @@ def userPredictionSubmit():
     user_prediction = request.form['prediction']
     print(user_id,game_date,home_team,visiting_team,user_prediction)
     
-    existing_prediction = upd.UserPrediction.query.filter_by(user_id=user_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction).first()
+    existing_prediction = UserPrediction.query.filter_by(user_id=user_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction).first()
     if existing_prediction:
         return jsonify({'success': False, 'message': 'User has already made a prediction for this game'})
 
-    new_prediction = upd.UserPrediction(user_id=user_id, game_date=game_date,  home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction)
+    new_prediction = UserPrediction(user_id=user_id, game_date=game_date,  home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction)
     db.session.add(new_prediction)
     db.session.commit()
 
@@ -73,3 +73,8 @@ def pop_accounts(acc_obj = acc_obj):
 
     all_accounts = db.session.query(Accounts).all()
     return render_template('pop_accounts_example.html', accounts = all_accounts)
+
+@app.route('/predict_data')
+def predict_data():
+    pred = db.session.query(UserPrediction).all()
+    return render_template('predict_data.html', pred = pred)
