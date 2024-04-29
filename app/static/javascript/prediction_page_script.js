@@ -10,20 +10,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Make AJAX request to fetch prediction for the current form
             fetch('/prediction/submit?user_id=1&form_id=' + formId)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Display the user's prediction
-                        userPrediction.style.display = "block";
-                        var predictionDisplay = userPrediction.querySelector(".userPredictionDisplayText");
-                        predictionDisplay.textContent = data.prediction;
-                        predictionForm.style.display = "none";
-                    }
-                })
-                .catch(error => {
-                    // Handle error
-                    console.error('Error:', error);
-                });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Display the user's prediction
+                    userPrediction.style.display = "block";
+                    var predictionDisplay = userPrediction.querySelector(".userPredictionDisplayText");
+                    predictionDisplay.textContent = data.prediction;
+                    predictionForm.style.display = "none";
+                }
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error:', error);
+            });
         });
     }
     // Select all prediction forms
@@ -42,17 +42,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Select all radio buttons within the current form
         var radioButtons = predictionForm.querySelectorAll('input[type="radio"]');
-
-        // !!! this is temporary to show when a user has already chosen their prediction !!!
-        // Load previously submitted prediction from local storage, if any
-        var userPrediction = predictionForm.nextElementSibling;
-        var storedPrediction = localStorage.getItem('userPrediction_' + predictionForm.dataset.formId);
-        if (storedPrediction) {
-            userPrediction.style.display = "block";
-            var predictionDisplay = userPrediction.querySelector(".userPredictionDisplayText");
-            predictionDisplay.textContent = storedPrediction;
-            predictionForm.style.display = "none";
-        }
 
         // Add change event listener to each radio button
         radioButtons.forEach(function(radioButton) {
@@ -98,9 +87,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         var predictionDisplay = userPrediction.querySelector(".userPredictionDisplayText");
                         predictionDisplay.textContent = prediction;
                         
-                        // !!! this is temporary to show when a user has already chosen their prediction !!!
-                        // Save prediction to local storage
-                        localStorage.setItem('userPrediction_' + predictionForm.dataset.formId, prediction);
                     }
                 } else {
                     // Handle error
