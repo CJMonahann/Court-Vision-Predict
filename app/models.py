@@ -174,3 +174,12 @@ class AccountVsModelPredicitons(db.Model):
     model_game_prediciton = db.Column(db.String(30), unique=False)
     account_game_prediciton = db.Column(db.String(30), unique=False)
     game_outcome = db.Column(db.String(30), unique=False)
+
+class UserPrediction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey("Accounts.id", ondelete="CASCADE"))
+    game_date = db.Column(db.String(255), nullable=False)
+    home_team = db.Column(db.String(255), nullable=False)
+    visiting_team = db.Column(db.String(255), nullable=False)
+    user_prediction = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
