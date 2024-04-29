@@ -76,23 +76,28 @@ class NbaNews(db.Model):
     information = db.Column(db.String(500), unique=False)
     link = db.Column(db.String(300), unique=False)
 
-class NbaTeams(db.Model): 
+class NbaTeams(db.Model):
     __tablename__ = 'NbaTeams'
     id = db.Column(db.Integer, primary_key=True)
-    api_id = db.Column(db.Integer, unique=False) #the teams ID number from the API
+    api_id = db.Column(db.Integer, unique=False)  # The team's ID number from the API
     name = db.Column(db.String(30), unique=False)
     nickname = db.Column(db.String(30), unique=False)
     code = db.Column(db.Integer, unique=True)
     city = db.Column(db.String(30), unique=False)
     logo = db.Column(db.String(100), unique=False)
-    all_star = db.Column(db.String(30), unique=False)
-    nba_franchise = db.Column(db.String(30), unique=False)
-    division = db.Column(db.String(30), unique=False)
+    conference = db.Column(db.String(30), unique=False)
+    wins = db.Column(db.Integer, unique=False)
+    losses = db.Column(db.Integer, unique=False)
+    last_ten_wins = db.Column(db.Integer, unique=False)
+    last_ten_losses = db.Column(db.Integer, unique=False)
+    win_percentage = db.Column(db.Float, unique=False)
+    streak = db.Column(db.String(30), unique=False)
 
-class Players(db.Model): 
+
+class Players(db.Model):
     __tablename__ = 'Players'
     id = db.Column(db.Integer, primary_key=True)
-    api_id = db.Column(db.Integer, unique=False) #the player's ID number from the API
+    api_id = db.Column(db.Integer, unique=False)
     team_id = db.Column(db.Integer, unique=False)
     first_name = db.Column(db.String(30), unique=False)
     last_name = db.Column(db.String(30), unique=False)
@@ -107,6 +112,8 @@ class Players(db.Model):
     num_jersey = db.Column(db.Integer, unique=False)
     position = db.Column(db.String(30), unique=False)
     active = db.Column(db.Boolean, unique=False, default=True)
+
+
 
 class PlayerStatistics(db.Model):
     __tablename__ = 'PlayerStatistics'
