@@ -83,77 +83,108 @@ class CollectPlayers():
                 self.__num_API_calls += 1
 
 
-    def __collect_player_stats(self, player_id, season = "2023"):
-
+    def __collect_player_stats(self, player_id, season="2023"):
         url = "https://api-nba-v1.p.rapidapi.com/players/statistics"
-
-        querystring = {"id":str(player_id),"season":season}
-
+        querystring = {"id": str(player_id), "season": season}
         headers = {
             "X-RapidAPI-Key": self.__API_KEY,
             "X-RapidAPI-Host": "api-nba-v1.p.rapidapi.com"
         }
 
         response = requests.get(url, headers=headers, params=querystring)
-        response = response.json()
+        if response.status_code == 200:
+            player_statistics = response.json().get('response', [])
 
-        if "response" in response:
-            response = response["response"] #returns stat history from all games played by the player
-            player_info = response[-1] #we want the last recorded game for the most relevent stats
+            if player_statistics:
+                # Initialize variables to store sum of statistical data
+                total_points = 0
+                total_fgm = 0
+                total_fga = 0
+                total_ftm = 0
+                total_fta = 0
+                total_tpm = 0
+                total_tpa = 0
+                total_offReb = 0
+                total_defReb = 0
+                total_totReb = 0
+                total_assists = 0
+                total_pFouls = 0
+                total_steals = 0
+                total_turnovers = 0
+                total_blocks = 0
+                total_plusMinus = 0
 
-            points = player_info["points"]
-            min = player_info["min"]
-            fgm = player_info["fgm"]
-            fga = player_info["fga"]
-            fgp = player_info["fgp"]
-            ftm = player_info["ftm"]
-            fta = player_info["fta"]
-            ftp = player_info["ftp"]
-            tpm = player_info["tpm"]
-            tpa = player_info["tpa"]
-            tpp = player_info["tpp"]
-            off_reb = player_info["offReb"]
-            def_reb = player_info["defReb"]
-            tot_reb = player_info["totReb"]
-            assists = player_info["assists"]
-            p_fouls = player_info["pFouls"]
-            steals = player_info["steals"]
-            turnovers = player_info["turnovers"]
-            blocks = player_info["blocks"]
-            plus_minus = player_info["plusMinus"]
-            comment = player_info["comment"]
+                # Iterate through player statistics to calculate sum
+                for stat in player_statistics:
+                    total_points += int(stat.get('points', 0))
+                    total_fgm += int(stat.get('fgm', 0))
+                    total_fga += int(stat.get('fga', 0))
+                    total_ftm += int(stat.get('ftm', 0))
+                    total_fta += int(stat.get('fta', 0))
+                    total_tpm += int(stat.get('tpm', 0))
+                    total_tpa += int(stat.get('tpa', 0))
+                    total_offReb += int(stat.get('offReb', 0))
+                    total_defReb += int(stat.get('defReb', 0))
+                    total_totReb += int(stat.get('totReb', 0))
+                    total_assists += int(stat.get('assists', 0))
+                    total_pFouls += int(stat.get('pFouls', 0))
+                    total_steals += int(stat.get('steals', 0))
+                    total_turnovers += int(stat.get('turnovers', 0))
+                    total_blocks += int(stat.get('blocks', 0))
+                    plus_minus = stat.get('plusMinus', '--')
+                    if plus_minus.isdigit():  # Check if it's a valid integer
+                        total_plusMinus += int(plus_minus)
 
-            #add record of data for the player into the database
-            create_stat = PlayerStatistics(
-                player_id = player_id,
-                points = points,
-                min = min,
-                fgm = fgm,
-                fga = fga,
-                fgp = fgp,
-                ftm = ftm,
-                fta = fta,
-                ftp = ftp,
-                tpm = tpm,
-                tpa = tpa,
-                tpp = tpp,
-                off_reb = off_reb,
-                def_reb = def_reb,
-                tot_reb = tot_reb,
-                assists = assists,
-                p_fouls = p_fouls,
-                steals = steals,
-                turnovers = turnovers,
-                blocks = blocks,
-                plus_minus = plus_minus,
-                comment = comment
-            )
+                # Calculate averages
+                num_games = len(player_statistics)
+                avg_points = total_points / num_games if num_games > 0 else 0
+                avg_fgm = total_fgm / num_games if num_games > 0 else 0
+                avg_fga = total_fga / num_games if num_games > 0 else 0
+                avg_ftm = total_ftm / num_games if num_games > 0 else 0
+                avg_fta = total_fta / num_games if num_games > 0 else 0
+                avg_tpm = total_tpm / num_games if num_games > 0 else 0
+                avg_tpa = total_tpa / num_games if num_games > 0 else 0
+                avg_offReb = total_offReb / num_games if num_games > 0 else 0
+                avg_defReb = total_defReb / num_games if num_games > 0 else 0
+                avg_totReb = total_totReb / num_games if num_games > 0 else 0
+                avg_assists = total_assists / num_games if num_games > 0 else 0
+                avg_pFouls = total_pFouls / num_games if num_games > 0 else 0
+                avg_steals = total_steals / num_games if num_games > 0 else 0
+                avg_turnovers = total_turnovers / num_games if num_games > 0 else 0
+                avg_blocks = total_blocks / num_games if num_games > 0 else 0
+                avg_plusMinus = total_plusMinus / num_games if num_games > 0 else 0
 
-            db.session.add(create_stat)
-            db.session.commit()
+                # Add statistics to the database
+                create_stat = PlayerStatistics(
+                    player_id=player_id,
+                    points=avg_points,
+                    min=None,  # Assuming 'min' is not available in the response
+                    fgm=avg_fgm,
+                    fga=avg_fga,
+                    fgp=None,  # Calculate field goal percentage if required
+                    ftm=avg_ftm,
+                    fta=avg_fta,
+                    ftp=None,  # Calculate free throw percentage if required
+                    tpm=avg_tpm,
+                    tpa=avg_tpa,
+                    tpp=None,  # Calculate three-point percentage if required
+                    off_reb=avg_offReb,
+                    def_reb=avg_defReb,
+                    tot_reb=avg_totReb,
+                    assists=avg_assists,
+                    p_fouls=avg_pFouls,
+                    steals=avg_steals,
+                    turnovers=avg_turnovers,
+                    blocks=avg_blocks,
+                    plus_minus=avg_plusMinus,
+                    comment=""  # Assuming 'comment' is not available in the response
+                )
 
-            print("Stat for player was created!")
-        
+                db.session.add(create_stat)
+                db.session.commit()
+
+                print("Stat for player was created!")
+     
     def get_players(self, arr):
         for team_id in arr:
             self.__collect_players(team_id)

@@ -71,8 +71,6 @@ def populate_nba_teams(standings_data=None):
             # Check if standings data is provided
             if standings_data is None:
                 standings_data = fetch_standings_from_api()
-            # Clear existing NBA teams data in the database
-            db.session.query(NbaTeams).delete()
             # Populate NBA teams data from standings data
             for team_data in standings_data:
                 team_info = team_data.get('team', {})
