@@ -1,0 +1,56 @@
+<!-- popular_players.html -->
+
+{% extends "landingpage.html" %}
+
+{% block user_nav %}
+    {% include "user_nav.html" %}
+{% endblock %}
+
+{% block additional_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basketball Leaders</title>
+<style>
+  .box {
+    width: 400px; /* increased width */
+    height: 850px; /* increased height */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    margin: 30px; /* increased margin for spacing */
+    padding: 30px; /* increased padding for content spacing */
+    text-align: center;
+    display: inline-block; /* display inline-block to place boxes next to each other */
+  }
+</style>
+</head>
+<body>
+
+<div id="pointsLeader" class="box">
+  <!-- Points Leader will be inserted here -->
+</div>
+
+<div id="assistsLeader" class="box">
+  <!-- Assists Leader will be inserted here -->
+</div>
+
+<div id="reboundsLeader" class="box">
+  <!-- Rebounds Leader will be inserted here -->
+</div>
+
+<script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
+</body>
+</html>
+
+
+
+
+<a href="/" style="text-decoration:none">
+    <h1 class="head">
+        <img src="{{ url_for('static', filename='images/basketball.png') }}" alt="Basketball">Court Vision Predict
+    </h1>
+</a>
+
+{% endblock %}

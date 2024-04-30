@@ -76,37 +76,44 @@ class NbaNews(db.Model):
     information = db.Column(db.String(500), unique=False)
     link = db.Column(db.String(300), unique=False)
 
-class NbaTeams(db.Model): 
+class NbaTeams(db.Model):
     __tablename__ = 'NbaTeams'
     id = db.Column(db.Integer, primary_key=True)
-    api_id = db.Column(db.Integer, unique=False) #the teams ID number from the API
+    api_id = db.Column(db.Integer, unique=False)  # The team's ID number from the API
     name = db.Column(db.String(30), unique=False)
     nickname = db.Column(db.String(30), unique=False)
     code = db.Column(db.Integer, unique=True)
     city = db.Column(db.String(30), unique=False)
-    logo = db.Column(db.String(30), unique=False)
-    all_star = db.Column(db.String(30), unique=False)
-    nba_franchise = db.Column(db.String(30), unique=False)
-    division = db.Column(db.String(30), unique=False)
+    logo = db.Column(db.String(100), unique=False)
+    conference = db.Column(db.String(30), unique=False)
+    wins = db.Column(db.Integer, unique=False)
+    losses = db.Column(db.Integer, unique=False)
+    last_ten_wins = db.Column(db.Integer, unique=False)
+    last_ten_losses = db.Column(db.Integer, unique=False)
+    win_percentage = db.Column(db.Float, unique=False)
+    streak = db.Column(db.String(30), unique=False)
 
-class Players(db.Model): 
+
+class Players(db.Model):
     __tablename__ = 'Players'
     id = db.Column(db.Integer, primary_key=True)
-    api_id = db.Column(db.Integer, unique=False) #the player's ID number from the API
-    team_id = db.Column(db.Integer, ForeignKey("NbaTeams.api_id", ondelete="CASCADE"))
+    api_id = db.Column(db.Integer, unique=False)
+    team_id = db.Column(db.Integer, unique=False)
     first_name = db.Column(db.String(30), unique=False)
     last_name = db.Column(db.String(30), unique=False)
     date_of_birth = db.Column(db.String(30), unique=False)
     country = db.Column(db.String(30), unique=False)
-    starting_year = db.Column(db.String(30), unique=False)
-    pro = db.Column(db.String(30), unique=False)
-    height = db.Column(db.Float, unique=False)
-    weight = db.Column(db.Float, unique=False)
-    college = db.Column(db.String(30), unique=False)
-    affiliation = db.Column(db.String(30), unique=False)
+    starting_year = db.Column(db.Integer, unique=False)
+    pro = db.Column(db.Integer, unique=False)
+    height = db.Column(db.String(10), unique=False)
+    weight = db.Column(db.String(10), unique=False)
+    college = db.Column(db.String(50), unique=False)
+    affiliation = db.Column(db.String(50), unique=False)
     num_jersey = db.Column(db.Integer, unique=False)
     position = db.Column(db.String(30), unique=False)
-    active = db.Column(db.String(30), unique=False)
+    active = db.Column(db.Boolean, unique=False, default=True)
+
+
 
 class PlayerStatistics(db.Model):
     __tablename__ = 'PlayerStatistics'

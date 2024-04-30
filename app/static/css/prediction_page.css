@@ -2,15 +2,17 @@ body {
     font-family: Arial, sans-serif;
 }
 .gameDate {
+    background-color: #ffffff;
     display: inline-block;
     width: 90%;
     height: auto;
     padding: 20px;
     margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-color: #000000;
+    border-style: solid;
 }
 .teamHome {
+    background-color: lightgrey;
     display: inline-block;
     vertical-align: top;
     text-align: center;
@@ -18,8 +20,8 @@ body {
     height: 200px;
     padding: 20px;
     margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-color: #000000;
+    border-style: solid;
 }
 .teamHome img {
     max-width: 100%;
@@ -28,6 +30,7 @@ body {
     margin: 0 auto;
 }
 .teamVisitor {
+    background-color: lightgrey;
     display: inline-block;
     vertical-align: top;
     text-align: center;
@@ -35,8 +38,8 @@ body {
     height: 200px;
     padding: 20px;
     margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-color: #000000;
+    border-style: solid;
 }
 .teamVisitor img {
     max-width: 100%;
@@ -45,6 +48,7 @@ body {
     margin: 0 auto;
 }
 .predictionCVPAI {
+    background-color: lightgrey;
     display: inline-block;
     vertical-align: top;
     text-align: center;
@@ -52,10 +56,11 @@ body {
     height: 200px;
     padding: 20px;
     margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-color: #000000;
+    border-style: solid;
 }
 .predictionUser {
+    background-color: lightgrey;
     display: inline-block;
     vertical-align: top;
     text-align: center;
@@ -63,6 +68,6 @@ body {
     height: 200px;
     padding: 20px;  
     margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-color: #000000;
+    border-style: solid;
 }

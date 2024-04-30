@@ -1,0 +1,44 @@
+<!-- user.html -->
+
+{% extends "landingpage.html" %}
+
+{% block user_nav %}
+    {% include "user_nav_auth.html" %}
+{% endblock %}
+
+{% block additional_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+</head>
+<body>
+    <div class="profile-container">
+        <img src="{{ user.profile_picture_url }}" alt="Profile Picture" class="profile-picture">
+        <div class="profile-details">
+            <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+            <p class="label">Username:</p>
+            <p>{{ user.user_name }}</p>
+            <p class="label">Email:</p>
+            <p>{{ user.email }}</p>
+            <p class="label">Location:</p>
+            <p>{{ user.city }}, {{ user.state }}</p>
+            <p class="label">Favorite NBA Team:</p>
+            <p>{{ user.favorite_team }}</p>
+            <p class="label">Favorite Players:</p>
+            <ul>
+                <li>{{ user.fav_player1 }}</li>
+                <li>{{ user.fav_player2 }}</li>
+                <li>{{ user.fav_player3 }}</li>
+                <li>{{ user.fav_player4 }}</li>
+                <li>{{ user.fav_player5 }}</li>
+            </ul>
+            <a href="{{ url_for('edit_profile', user_id=user.id) }}" class="edit-profile-button">Edit Profile</a>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}
