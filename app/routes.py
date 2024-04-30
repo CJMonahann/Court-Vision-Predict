@@ -51,12 +51,9 @@ def userPredictionSubmit():
         home_team = request.form['home_team']
         visiting_team = request.form['visiting_team']
         user_prediction = request.form['prediction']
-        print(user_id,form_id,game_date,home_team,visiting_team,user_prediction)
-        
         existing_prediction = UserPrediction.query.filter_by(user_id=user_id, form_id=form_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction).first()
         if existing_prediction:
             return jsonify({'success': False, 'message': 'User has already made a prediction for this game'})
-
         new_prediction = UserPrediction(user_id=user_id, form_id=form_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction)
         db.session.add(new_prediction)
         db.session.commit()
@@ -65,12 +62,9 @@ def userPredictionSubmit():
         pred = db.session.query(UserPrediction).all()
         user_id = request.args.get('user_id')
         form_id = request.args.get('form_id')
-
-        # Query the database for the user's prediction for the specified form
         user_submission = UserPrediction.query.filter_by(user_id=user_id, form_id=form_id).first()
     
         if user_submission:
-            #print(pred[int(form_id)].user_prediction)
             return jsonify({'success': True, 'prediction': user_submission.user_prediction})
         else:
             return jsonify({'success': False, 'message': 'No prediction found for this game'})
