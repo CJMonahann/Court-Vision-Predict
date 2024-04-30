@@ -7,9 +7,10 @@ document.addEventListener("DOMContentLoaded", function() {
             // Load previously submitted prediction from database, if any
             var userPrediction = predictionForm.nextElementSibling;
             var formId = predictionForm.dataset.formId;
+            var userId = predictionForm.dataset.userId;
 
             // Make AJAX request to fetch prediction for the current form
-            fetch('/prediction/submit?user_id=1&form_id=' + formId)
+            fetch('/prediction/submit?user_id=' + userId + '&form_id=' + formId)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {

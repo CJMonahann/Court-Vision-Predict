@@ -32,7 +32,7 @@
 <div class="predictionUser">
 
     <!-- Predictions Form -->
-    <form class="predictionForm" action="/prediction/submit" method="POST" data-form-id="{{ i }}">
+    <form class="predictionForm" action="/prediction/submit" method="POST" data-form-id="{{ i }}" data-user-id="{{ user_id }}">
         <h2>Make Your Prediction</h2>
         <input type="hidden" name="user_id" value="{{ user_id }}">
         <input type="hidden" name="form_id" value="{{ i }}">
