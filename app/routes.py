@@ -124,6 +124,7 @@ def pop_accounts(acc_obj = acc_obj):
     all_accounts = db.session.query(Accounts).all()
     return render_template('pop_accounts_example.html', accounts = all_accounts)
 
+'''
 collect_players = cPlrs.CollectPlayers()
 all_teams = [31, 19, 14, 23, 8, 11, 30, 17, 28, 16, 29, 40, 9, 22, 25, 41, 5, 1, 20, 26, 10, 6, 15, 7, 21, 38, 4, 27, 24, 2]
 @app.route('/pop_players')
@@ -136,6 +137,7 @@ def pop_players(collect_players = collect_players, teams_arr = all_teams):
 
     #all_accounts = db.session.query(Accounts).all()
     return render_template('landingpage.html')
+'''
 
 # Route to populate NBA teams
 @app.route('/populate_nba_teams', methods=['GET'])
