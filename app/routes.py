@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, Flask, request, redirect, url_for, abort, sessions, send_from_directory
+from flask import render_template, jsonify, Flask, request, redirect, url_for, abort, session
 from app import app, db
 from dotenv import load_dotenv
 import requests
@@ -12,12 +12,18 @@ from app import make_accounts_example as mae
 from app.models import Accounts
 from app import collect_players as cPlrs
 from app.forms import signUpForm # Makes forms functional in routes
+from datetime import timedelta
+app.permanent_session_lifetime = timedelta(days=5) #Sets the maximum time before user is logged out as 5 days
+import random #allows use of random number generation for user ID
+random.seed(3)
 
 load_dotenv()  # Load environment variables from .env file
 
 @app.route('/')
 def index():
-        return render_template('landingpage.html')
+    if "user" in session:
+        return render_template('landing_page_authenticated.html') 
+    return render_template('landingpage.html')
 
 @app.route('/news')
 def get_news():
@@ -36,17 +42,20 @@ def get_news():
 
 @app.route('/login')
 def login_page():
+    if "user" in session:
+        return redirect(url_for("user"))    
     return render_template('login.html')
 
 @app.route('/signup')
 def signup_page():
     form = signUpForm() #should in theory allow user data to be sent to db, or at least set up the ability to do so
     if form.validate_on_submit():
+       #user_id = getrandbits(6) #Not working despite import of random module, look up why
        password = form.password.data
        logged_user = Accounts(username=form.username.data, email=form.email.data, password=password)
        db.session.add(logged_user)
        db.session.commit()
-    #   flash('Account created. Please log in.') #currently nonfunctional, reminder to rewatch tutorial on flash messages
+    #  flash('Account created. Please log in.') #currently nonfunctional, importing didn't work. Reminder to rewatch tutorial
        return redirect('/login') #should send user to the login page once account is in db for final confirmation
     return render_template('signup.html', form = form )
 
