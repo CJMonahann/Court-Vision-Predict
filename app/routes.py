@@ -112,17 +112,17 @@ def teams_page():
         return render_template('teams_page.html')
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
+
 acc_obj = mae.MakeAccounts()
 @app.route('/pop_accounts')
 def pop_accounts(acc_obj = acc_obj):
     if acc_obj.num_calls <= 0: #will only be called once every time you run the flask app
-        db.drop_all()
-        db.create_all()
         acc_obj.populate_accounts() #this creates the fake accounts to use for now, and increments 'num_calls'
-        print('DATABASE REFRESHED - EXAMPLE ACCOUNTS CREATED')
+        print('EXAMPLE ACCOUNTS CREATED')
 
     all_accounts = db.session.query(Accounts).all()
     return render_template('pop_accounts_example.html', accounts = all_accounts)
+
 
 '''
 collect_players = cPlrs.CollectPlayers()
