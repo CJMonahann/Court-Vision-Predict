@@ -40,13 +40,28 @@ def get_news():
     else:
         return jsonify({'error': 'Failed to fetch news'}), 500
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login_page():
+    form = signUpForm()
     if "user" in session:
-        return redirect(url_for("user"))    
-    return render_template('login.html')
+        return redirect(url_for("user"))
+    if form.validate_on_submit():
+        input_username = form.user_name.data
+        input_password = form.password.data
+        logged_user = Accounts.query.filter_by(user_name=input_username).first
+        logged_password = Accounts.query.filter_by(password=input_password).exists
+        if logged_user is None:
+            print("User not found, please try again.")
+        elif logged_password is None:
+            print("Password incorrect, please try again.")
+        else:
+            print("You have been logged in.")
+            logged_user(logged_user)
+            session['user_name'] = request.form['user_name']
+            return redirect('/landing_page_authenticated')
+    return render_template('login.html', form = form )
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup_page():
     form = signUpForm() #should in theory allow user data to be sent to db, or at least set up the ability to do so
     if form.validate_on_submit():
