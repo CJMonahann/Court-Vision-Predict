@@ -1,0 +1,100 @@
+<!-- teams_page.html -->
+
+{% extends "landingpage.html" %}
+
+{% block user_nav %}
+    {% include "user_nav_auth.html" %}
+{% endblock %}
+
+{% block additional_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Standings</title>
+    <style>
+        .tab {
+            display: none;
+        }
+
+        #tabs-container {
+            margin-bottom: 20px;
+        }
+
+        #tabs-container button {
+            padding: 10px 20px;
+            margin-right: 5px;
+            cursor: pointer;
+            border-color: black;
+            border-style: solid;
+            border-radius: 5px;
+        }
+
+        #team-info-box {
+             border: 1px solid #ccc;
+            padding: 10px;
+            width: 400px;
+            background-color: #f9f9f9;
+            border-color: black;
+            border-style: solid;
+            border-radius: 5px;
+            float: left; /* Float the team info box to the left */
+            display: flex; /* Use flexbox for alignment */
+            justify-content: center; /* Align content horizontally to the center */
+            align-items: center; /* Align content vertically to the center */
+}
+
+
+        .team-info {
+            margin-bottom: 10px;
+        }
+
+        #player-info-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 400px;
+            background-color: #f9f9f9;
+            border-color: black;
+            border-style: solid;
+            border-radius: 5px;
+            float: left; /* Float the player info box to the left */
+        }
+
+        .player-info {
+            margin-bottom: 10px;
+        }
+
+        /* Clear the float to prevent layout issues */
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .show-player-info {
+            display: block;
+        }
+
+        /* Hide the boxes initially */
+        #team-info-box,
+        #player-info-box {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="tabs-container"></div>
+    <div id="team-info-box">
+        <div class="team-info"></div>
+    </div>
+    <!-- Add player info box -->
+    <div id="player-info-box">
+        <!-- Player information will be displayed here -->
+        <div class="player-info"></div>
+    </div>
+    <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
+</body>
+</html>
+{% endblock %}

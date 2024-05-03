@@ -21,7 +21,7 @@ load_dotenv()  # Load environment variables from .env file
 
 @app.route('/')
 def index():
-    if "user" in session:
+    if "user_name" in session:
         return render_template('landing_page_authenticated.html') 
     return render_template('landingpage.html')
 
@@ -43,41 +43,71 @@ def get_news():
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     form = signUpForm()
-    if "user" in session:
-        return redirect(url_for("user"))
+    print("Login page accessed.")  # Debug statement
+    if "user_name" in session:
+        print("User already logged in. Redirecting...")  # Debug statement
+        return redirect(url_for("landing_page_authenticated"))
     if form.validate_on_submit():
+        print("Form validated.")  # Debug statement
         input_username = form.user_name.data
+        input_email = form.email.data
         input_password = form.password.data
-        logged_user = Accounts.query.filter_by(user_name=input_username).first
-        logged_password = Accounts.query.filter_by(password=input_password).exists
+        print("Submitted username:", input_username)  # Debug statement
+        print("Submitted email:", input_email)  # Debug statement
+        print("Submitted password:", input_password)  # Debug statement
+        logged_user = Accounts.query.filter_by(user_name=input_username, email=input_email).first()
         if logged_user is None:
-            print("User not found, please try again.")
-        elif logged_password is None:
-            print("Password incorrect, please try again.")
+            print("User not found, please try again.")  # Debug statement
+        elif logged_user.password != input_password:  # Assuming password is stored as plaintext
+            print("Password incorrect, please try again.")  # Debug statement
         else:
-            print("You have been logged in.")
-            logged_user(logged_user)
-            session['user_name'] = request.form['user_name']
-            return redirect('/landing_page_authenticated')
-    return render_template('login.html', form = form )
+            print("You have been logged in.")  # Debug statement
+            session['user_name'] = input_username
+            print("Session user_name set to:", input_username)  # Debug statement
+            print("Redirecting to landing page...")  # Debug statement
+            return redirect(url_for("landing_page_authenticated"))
+    else:
+        print("Form validation failed.")  # Debug statement
+        print("Form errors:", form.errors)  # Debug statement
+    return render_template('login.html', form=form)
+
+
+@app.route('/landing_page_authenticated')
+def landing_page_authenticated():
+    if "user_name" in session:
+        return render_template('landing_page_authenticated.html')
+    else:
+        print("User not logged in. Redirecting to login page...")
+        return redirect(url_for('login_page'))
+    
+@app.route('/logout')
+def logout():
+    # Clear the user session
+    session.pop('user_name', None)
+    # Redirect the user to the login page
+    return redirect(url_for('login_page'))
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_page():
-    form = signUpForm() #should in theory allow user data to be sent to db, or at least set up the ability to do so
+    form = signUpForm()
     if form.validate_on_submit():
-       #user_id = getrandbits(6) #Not working despite import of random module, look up why
        password = form.password.data
-       logged_user = Accounts(username=form.username.data, email=form.email.data, password=password)
+       logged_user = Accounts(user_name=form.user_name.data, email=form.email.data, password=password)
        db.session.add(logged_user)
        db.session.commit()
-    #  flash('Account created. Please log in.') #currently nonfunctional, importing didn't work. Reminder to rewatch tutorial
-       return redirect('/login') #should send user to the login page once account is in db for final confirmation
-    return render_template('signup.html', form = form )
+       return redirect(url_for('login_page'))
+    return render_template('signup.html', form=form)
 
-@app.route('/user/<int:user_id>')
-def user_page(user_id):
-    # Query the user from the database based on user_id
-    user = Accounts.query.get(user_id)
+@app.route('/user')
+def user():
+    # Check if user_name is stored in session
+    if 'user_name' not in session:
+        return redirect(url_for('login_page'))  # Redirect to login page if not logged in
+
+    user_name = session['user_name']
+    
+    # Query the user from the database based on user_name
+    user = Accounts.query.filter_by(user_name=user_name).first()
 
     # If user not found, return a 404 error page
     if not user:
@@ -86,11 +116,22 @@ def user_page(user_id):
     # Render the user.html template and pass the user data
     return render_template('user.html', user=user)
 
-    #'user/1' or 'user/2' for example
 
-@app.route('/edit-profile/<int:user_id>', methods=['GET', 'POST'])
-def edit_profile(user_id):
-    user = Accounts.query.get(user_id)
+@app.route('/user/<string:user_name>')
+def user_page(user_name):
+    # Query the user from the database based on user_name
+    user = Accounts.query.filter_by(user_name=user_name).first()
+
+    # If user not found, return a 404 error page
+    if not user:
+        abort(404)
+
+    # Render the user.html template and pass the user data
+    return render_template('user.html', user=user)
+
+@app.route('/edit-profile/<string:user_name>', methods=['GET', 'POST'])
+def edit_profile(user_name):
+    user = Accounts.query.filter_by(user_name=user_name).first()
     if not user:
         abort(404)
 
@@ -108,23 +149,58 @@ def edit_profile(user_id):
         db.session.commit()
 
         # Redirect to the user profile page
-        return redirect(url_for('user_page', user_id=user.id))
+        return redirect(url_for('user_page', user_name=user.user_name))
 
     # Render the edit profile template with the user data
     return render_template('edit_profile.html', user=user)
 
 @app.route('/predictions')
 def predictions():
-    gameDate,teams,cvpPrediction=upd.__getPredictedGames()
-    return render_template('prediction-page.html',gameDate=gameDate,teams=teams,cvpPrediction=cvpPrediction)
+    # Check if user is authenticated
+    if 'user_name' in session:
+        # User is authenticated, redirect to predictions_auth.html
+        return redirect(url_for('predictions_auth'))
+    
+    # If user is not authenticated, render prediction-page.html
+    gameDate, teams, cvpPrediction = upd.__getPredictedGames()
+    return render_template('prediction-page.html', gameDate=gameDate, teams=teams, cvpPrediction=cvpPrediction)
+
+@app.route('/predictions_auth')
+def predictions_auth():
+    # Add logic here to fetch data or perform actions related to the authenticated predictions page
+    gameDate, teams, cvpPrediction = upd.__getPredictedGames()
+    return render_template('predictions-page_auth.html', gameDate=gameDate, teams=teams, cvpPrediction=cvpPrediction)
 
 @app.route('/popular_players')
 def popular_players_page():
+    # Check if user is authenticated
+    if 'user_name' in session:
+        # User is authenticated, render popular_players_auth.html
+        return render_template('popular_players_auth.html')
+    
+    # If user is not authenticated, render popular_players.html
     return render_template('popular_players.html')
+
+@app.route('/popular_players_auth')
+def popular_players_auth():
+    # Add logic here to fetch data or perform actions related to the authenticated popular players page
+    return render_template('popular_players_auth.html')
 
 @app.route('/teams_pages')
 def teams_page():
-        return render_template('teams_page.html')
+    # Check if user is authenticated
+    if 'user_name' in session:
+        # User is authenticated, redirect to teams_page_auth.html
+        return redirect(url_for('teams_page_auth'))
+    
+    # If user is not authenticated, render teams_page.html
+    return render_template('teams_page.html')
+
+@app.route('/teams_pages_auth')
+def teams_page_auth():
+    # Add logic here to fetch data or perform actions related to the authenticated teams page
+    return render_template('teams_page_auth.html')
+
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
 acc_obj = mae.MakeAccounts()

@@ -14,12 +14,13 @@
         </a>
         {% block user_nav_auth %}
         <div class="user-actions">
-            <div class="tab user-profile-tab" id="user-profile-tab">User Profile</div>
+            <div class="user-tab" id="user-profile-tab">User Profile</div>
+            <a href="/logout" class="logout-button">Logout</a>  <!-- Add logout button -->
         </div>
         <div class="nav-bar">
-            <div class="tab" id="teamsTab">NBA Team</div>
-            <div class="tab" id="playersTab">NBA Players</div>
-            <div class="tab" id="predictionsTab">Current Matches</div>
+            <div class="nav-tab" id="teamsTab">NBA Team</div>
+            <div class="nav-tab" id="playersTab">NBA Players</div>
+            <div class="nav-tab" id="predictionsTab">Current Matches</div>
         </div>
         {% endblock %}
     </div>
