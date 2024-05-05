@@ -18,7 +18,7 @@
 <body>
     <div class="edit_profile_container">
         <h1>Edit Profile</h1>
-        <form method="POST" action="{{ url_for('edit_profile', user_id=user.id) }}">
+        <form method="POST" action="{{ url_for('edit_profile', user_name=user.user_name) }}">
             <label for="first_name">First Name:</label>
             <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}"><br><br>
         

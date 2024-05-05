@@ -36,7 +36,7 @@
                 <li>{{ user.fav_player4 }}</li>
                 <li>{{ user.fav_player5 }}</li>
             </ul>
-            <a href="{{ url_for('edit_profile', user_id=user.id) }}" class="edit-profile-button">Edit Profile</a>
+            <a href="{{ url_for('edit_profile', user_name=user.user_name) }}" class="edit-profile-button">Edit Profile</a>
         </div>
     </div>
 </body>
