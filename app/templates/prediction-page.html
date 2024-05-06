@@ -32,9 +32,8 @@
 <div class="predictionUser">
 
     <!-- Predictions Form -->
-    <form class="predictionForm" action="/prediction/submit" method="POST" data-form-id="{{ i }}" data-user-id="{{ user_id }}">
+    <form class="predictionForm" action="/prediction/submit" method="POST" data-form-id="{{ i }}">
         <h2>Make Your Prediction</h2>
-        <input type="hidden" name="user_id" value="{{ user_id }}">
         <input type="hidden" name="form_id" value="{{ i }}">
         <input type="hidden" name="game_date" value="{{ gameDate[i] }}">
         <input type="hidden" name="home_team" value="{{ teams[i][0] }}">
