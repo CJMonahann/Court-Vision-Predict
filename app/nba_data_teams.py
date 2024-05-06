@@ -14,8 +14,8 @@ def fetch_standings_from_api(season='2023'):
     querystring = {"league": "standard", "season": season}
     # Set headers for the request including RapidAPI key and host
     headers = {
-        "X-RapidAPI-Key": os.getenv('RAPIDAPI_KEY'),
-        "X-RapidAPI-Host": os.getenv('RAPIDAPI_HOST')
+        "X-RapidAPI-Key": os.getenv('__API_KEY'),
+        "X-RapidAPI-Host": "api-nba-v1.p.rapidapi.com"
     }
     # Send GET request to the API
     response = requests.get(url, headers=headers, params=querystring)

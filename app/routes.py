@@ -237,7 +237,7 @@ def userPredictionSubmit():
 
 
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
-
+'''
 acc_obj = mae.MakeAccounts()
 @app.route('/pop_accounts')
 def pop_accounts(acc_obj = acc_obj):
@@ -247,6 +247,7 @@ def pop_accounts(acc_obj = acc_obj):
 
     all_accounts = db.session.query(Accounts).all()
     return render_template('pop_accounts_example.html', accounts = all_accounts)
+'''
 
 
 '''
