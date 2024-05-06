@@ -156,21 +156,15 @@ def edit_profile(user_name):
 
 @app.route('/predictions')
 def predictions():
-    # Check if user is authenticated
-    if 'user_name' in session:
-        # User is authenticated, redirect to predictions_auth.html
-        return redirect(url_for('predictions_auth'))
-    
-    # If user is not authenticated, render prediction-page.html
     gameDate, teams, cvpPrediction = upd.__getPredictedGames()
     return render_template('prediction-page.html', gameDate=gameDate, teams=teams, cvpPrediction=cvpPrediction)
-
+'''
 @app.route('/predictions_auth')
 def predictions_auth():
     # Add logic here to fetch data or perform actions related to the authenticated predictions page
     gameDate, teams, cvpPrediction = upd.__getPredictedGames()
     return render_template('predictions-page_auth.html', gameDate=gameDate, teams=teams, cvpPrediction=cvpPrediction)
-
+'''
 @app.route('/popular_players')
 def popular_players_page():
     # Check if user is authenticated
@@ -204,6 +198,7 @@ def teams_page_auth():
 
 @app.route('/prediction/submit', methods=['POST', 'GET'])
 def userPredictionSubmit():
+    print('!!!!!!!!!!!!!!!',session['user_name'])
     if 'user_name' in session:
         account = Accounts.query.filter_by(user_name=session['user_name']).first()
         userID = account.id

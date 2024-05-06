@@ -183,6 +183,7 @@ class AccountVsModelPredicitons(db.Model):
     game_outcome = db.Column(db.String(30), unique=False)
 
 class UserPrediction(db.Model):
+    __tablename__ = 'UserPrediction'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey("Accounts.id", ondelete="CASCADE"))
     form_id = db.Column(db.Integer, nullable=False)
