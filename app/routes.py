@@ -9,15 +9,15 @@ from .nba_data_teams import populate_nba_teams, get_nba_standings
 from .nba_data_players import fetch_players_from_api, fetch_player_statistics
 #ADDED AS AN EXAMPLE FOR THE DUMMY DATA
 from app import make_accounts_example as mae
-from app.models import Accounts
+from app.models import Accounts, UserPrediction
 from app import collect_players as cPlrs
 from app.forms import signUpForm # Makes forms functional in routes
 from datetime import timedelta
 app.permanent_session_lifetime = timedelta(days=5) #Sets the maximum time before user is logged out as 5 days
 import random #allows use of random number generation for user ID
 random.seed(3)
-
 load_dotenv()  # Load environment variables from .env file
+import os
 
 @app.route('/')
 def index():
@@ -202,6 +202,42 @@ def teams_page_auth():
     return render_template('teams_page_auth.html')
 
 
+@app.route('/prediction/submit', methods=['POST', 'GET'])
+def userPredictionSubmit():
+    if 'user_name' in session:
+        account = Accounts.query.filter_by(user_name=session['user_name']).first()
+        userID = account.id
+
+        if request.method == 'POST':
+            user_id = userID
+            form_id = request.form['form_id']
+            game_date = request.form['game_date']
+            home_team = request.form['home_team']
+            visiting_team = request.form['visiting_team']
+            user_prediction = request.form['prediction']
+        
+            existing_prediction = UserPrediction.query.filter_by(user_id=user_id, form_id=form_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction).first()
+            if existing_prediction:
+                return jsonify({'success': False, 'message': 'User has already made a prediction for this game'})   
+        
+            new_prediction = UserPrediction(user_id=user_id, form_id=form_id, game_date=game_date, home_team=home_team, visiting_team=visiting_team, user_prediction=user_prediction)
+            db.session.add(new_prediction)
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'Prediction submitted successfully'})
+    
+        elif request.method == 'GET':
+            user_id = userID
+            form_id = request.args.get('form_id')
+            user_submission = UserPrediction.query.filter_by(user_id=user_id, form_id=form_id).first()
+
+            if user_submission:
+                return jsonify({'success': True, 'prediction': user_submission.user_prediction})
+            else:
+                return jsonify({'success': False, 'message': 'No prediction found for this game'})
+    else:
+        return jsonify({'warning': 'No User in Current Session'})
+
+
 #ALL OF THIS CODE IS JUST TO POPULATE DB WITH EXAMPLE ACCS - THIS ROUTE (and all files) WILL BE REMOVED
 
 acc_obj = mae.MakeAccounts()
@@ -320,3 +356,7 @@ def leaders_json():
 if __name__ == '__main__':
     app.run(debug=True)
     
+@app.route('/predict_data')
+def predict_data():
+    pred = db.session.query(UserPrediction).all()
+    return render_template('predict_data.html', pred = pred)
