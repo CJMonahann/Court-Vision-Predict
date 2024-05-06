@@ -181,10 +181,13 @@ def popular_players_page():
     # If user is not authenticated, render popular_players.html
     return render_template('popular_players.html')
 
+#will be implemented later
+'''
 @app.route('/popular_players_auth')
 def popular_players_auth():
     # Add logic here to fetch data or perform actions related to the authenticated popular players page
     return render_template('popular_players_auth.html')
+'''
 
 @app.route('/teams_pages')
 def teams_page():
