@@ -10,5 +10,4 @@ def __getPredictedGames():
             gameDate.append(date)
             teams.append([game[i]['home'],game[i]['visitors']])
             cvpPrediction.append(game[i]['prediction'])
-
     return gameDate,teams,cvpPrediction
